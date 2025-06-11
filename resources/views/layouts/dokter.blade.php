@@ -84,8 +84,8 @@
                 <div class="nav-section-title" style="font-size: 0.8rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Dashboard</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('pasien.dashboard') ? 'active' : '' }}" href="{{ route('pasien.dashboard') }}" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none; {{ request()->routeIs('pasien.dashboard') ? 'background-color: #f8d7da; color: #dc3545; border-left-color: #dc3545; font-weight: 600;' : '' }}">
-                            <i class="fas fa-tachometer-alt" style="width: 20px; margin-right: 10px; color: {{ request()->routeIs('pasien.dashboard') ? '#dc3545' : '#6c757d' }};"></i>
+                        <a class="nav-link {{ request()->routeIs('dokter.dashboard') ? 'active' : '' }}" href="{{ route('dokter.dashboard') }}" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none; {{ request()->routeIs('dokter.dashboard') ? 'background-color: #f8d7da; color: #dc3545; border-left-color: #dc3545; font-weight: 600;' : '' }}">
+                            <i class="fas fa-tachometer-alt" style="width: 20px; margin-right: 10px; color: {{ request()->routeIs('dokter.dashboard') ? '#dc3545' : '#6c757d' }};"></i>
                             Dashboard Utama
                         </a>
                     </li>
@@ -198,31 +198,6 @@
                 </ul>
             </div>
 
-            <!-- Laporan Section -->
-            <div class="nav-section" style="padding: 0 1.5rem; margin-bottom: 1.5rem;">
-                <div class="nav-section-title" style="font-size: 0.8rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Laporan</div>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545'; this.querySelector('i').style.color='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; this.querySelector('i').style.color='#6c757d';">
-                            <i class="fas fa-chart-line" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Statistik Praktik
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545'; this.querySelector('i').style.color='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; this.querySelector('i').style.color='#6c757d';">
-                            <i class="fas fa-file-pdf" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Laporan Bulanan
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545'; this.querySelector('i').style.color='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; this.querySelector('i').style.color='#6c757d';">
-                            <i class="fas fa-chart-pie" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Analisis Penyakit
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
             <!-- Pengaturan Section -->
             <div class="nav-section" style="padding: 0 1.5rem; margin-bottom: 1.5rem;">
                 <div class="nav-section-title" style="font-size: 0.8rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Pengaturan</div>
@@ -261,192 +236,104 @@
     </main>
 
     <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
     <script>
-        // Sidebar Toggle Functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-            const sidebarOverlay = document.getElementById('sidebarOverlay');
-            let sidebarOpen = true;
-
-            function toggleSidebar() {
-                sidebarOpen = !sidebarOpen;
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        // State untuk menyimpan status sidebar
+        let sidebarCollapsed = false;
+        
+        // Fungsi untuk toggle sidebar
+        function toggleSidebar() {
+            sidebarCollapsed = !sidebarCollapsed;
+            
+            if (sidebarCollapsed) {
+                // Hide sidebar
+                sidebar.style.transform = 'translateX(-100%)';
+                mainContent.style.marginLeft = '0';
                 
-                if (window.innerWidth >= 992) {
-                    // Desktop behavior
-                    if (sidebarOpen) {
-                        sidebar.style.transform = 'translateX(0)';
-                        mainContent.style.marginLeft = '280px';
-                    } else {
-                        sidebar.style.transform = 'translateX(-100%)';
-                        mainContent.style.marginLeft = '0';
-                    }
-                } else {
-                    // Mobile behavior
-                    if (sidebarOpen) {
-                        sidebar.style.transform = 'translateX(0)';
-                        sidebarOverlay.style.display = 'block';
-                        document.body.style.overflow = 'hidden';
-                    } else {
-                        sidebar.style.transform = 'translateX(-100%)';
-                        sidebarOverlay.style.display = 'none';
-                        document.body.style.overflow = 'auto';
-                    }
-                }
+                // Simpan state ke sessionStorage
+                sessionStorage.setItem('sidebarCollapsed', 'true');
+            } else {
+                // Show sidebar
+                sidebar.style.transform = 'translateX(0)';
+                mainContent.style.marginLeft = '280px';
+                
+                // Simpan state ke sessionStorage
+                sessionStorage.setItem('sidebarCollapsed', 'false');
             }
-
-            function handleResize() {
-                if (window.innerWidth < 992) {
-                    // Mobile: hide sidebar by default
+        }
+        
+        // Event listener untuk toggle button
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        
+        // Event listener untuk overlay (mobile)
+        sidebarOverlay.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+                sidebarOverlay.style.display = 'none';
+            }
+        });
+        
+        // Fungsi untuk mengatur responsive behavior
+        function handleResize() {
+            if (window.innerWidth <= 768) {
+                // Mobile view
+                sidebar.style.transform = 'translateX(-100%)';
+                mainContent.style.marginLeft = '0';
+                sidebarOverlay.style.display = 'none';
+            } else {
+                // Desktop view - restore saved state
+                const savedState = sessionStorage.getItem('sidebarCollapsed');
+                
+                if (savedState === 'true') {
                     sidebar.style.transform = 'translateX(-100%)';
                     mainContent.style.marginLeft = '0';
-                    sidebarOverlay.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                    sidebarOpen = false;
+                    sidebarCollapsed = true;
                 } else {
-                    // Desktop: show sidebar by default
                     sidebar.style.transform = 'translateX(0)';
                     mainContent.style.marginLeft = '280px';
+                    sidebarCollapsed = false;
+                }
+                
+                sidebarOverlay.style.display = 'none';
+            }
+        }
+        
+        // Handle window resize
+        window.addEventListener('resize', handleResize);
+        
+        // Load saved state on page load
+        const savedState = sessionStorage.getItem('sidebarCollapsed');
+        if (savedState === 'true' && window.innerWidth > 768) {
+            sidebarCollapsed = true;
+            sidebar.style.transform = 'translateX(-100%)';
+            mainContent.style.marginLeft = '0';
+        }
+        
+        // Enhanced mobile toggle
+        if (window.innerWidth <= 768) {
+            sidebarToggle.addEventListener('click', function() {
+                if (sidebar.style.transform === 'translateX(0px)' || sidebar.style.transform === '') {
+                    sidebar.style.transform = 'translateX(-100%)';
                     sidebarOverlay.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                    sidebarOpen = true;
-                }
-            }
-
-            // Initialize
-            handleResize();
-
-            // Event listeners
-            sidebarToggle.addEventListener('click', toggleSidebar);
-            sidebarOverlay.addEventListener('click', function() {
-                if (window.innerWidth < 992) {
-                    toggleSidebar();
+                } else {
+                    sidebar.style.transform = 'translateX(0)';
+                    sidebarOverlay.style.display = 'block';
                 }
             });
-
-            window.addEventListener('resize', handleResize);
-
-            // Close sidebar on mobile when clicking nav links
-            const navLinks = sidebar.querySelectorAll('.nav-link');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    if (window.innerWidth < 992 && sidebarOpen) {
-                        toggleSidebar();
-                    }
-                });
-            });
-        });
-
-        // Active Navigation Highlight
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentPath = window.location.pathname;
-            const navLinks = document.querySelectorAll('.sidebar .nav-link');
-            
-            navLinks.forEach(link => {
-                if (link.getAttribute('href') === currentPath) {
-                    // Remove active class from all links
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    // Add active class to current link
-                    link.classList.add('active');
-                    link.style.cssText = `
-                        color: #dc3545 !important; 
-                        background-color: #f8d7da !important; 
-                        border-left: 3px solid #dc3545 !important; 
-                        font-weight: 600 !important;
-                        padding: 0.75rem 1.5rem !important; 
-                        margin: 0.2rem 0 !important; 
-                        border-radius: 0 !important; 
-                        transition: all 0.3s ease !important; 
-                        display: flex !important; 
-                        align-items: center !important; 
-                        text-decoration: none !important;
-                    `;
-                    const icon = link.querySelector('i');
-                    if (icon) {
-                        icon.style.color = '#dc3545';
-                    }
-                }
-            });
-        });
-
-        // Smooth scrolling for internal links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Auto-dismiss alerts after 5 seconds
-        document.addEventListener('DOMContentLoaded', function() {
-            const alerts = document.querySelectorAll('.alert');
-            alerts.forEach(alert => {
-                if (alert.classList.contains('alert-dismissible')) {
-                    setTimeout(() => {
-                        const bsAlert = new bootstrap.Alert(alert);
-                        bsAlert.close();
-                    }, 5000);
-                }
-            });
-        });
-
-        // Tooltip initialization
-        document.addEventListener('DOMContentLoaded', function() {
-            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        });
-
-        // Popover initialization  
-        document.addEventListener('DOMContentLoaded', function() {
-            const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-            const popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-                return new bootstrap.Popover(popoverTriggerEl);
-            });
-        });
-
-        // Form validation enhancement
-        document.addEventListener('DOMContentLoaded', function() {
-            const forms = document.querySelectorAll('.needs-validation');
-            Array.prototype.slice.call(forms).forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        });
-
-        // Loading state for buttons
-        function showButtonLoading(button, loadingText = 'Memproses...') {
-            const originalText = button.innerHTML;
-            button.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>${loadingText}`;
-            button.disabled = true;
-            button.setAttribute('data-original-text', originalText);
         }
-
-        function hideButtonLoading(button) {
-            const originalText = button.getAttribute('data-original-text');
-            if (originalText) {
-                button.innerHTML = originalText;
-                button.disabled = false;
-                button.removeAttribute('data-original-text');
-            }
-        }
+        
+        // Initialize responsive behavior
+        handleResize();
+    });
     </script>
-
     @yield('scripts')
 </body>
+@stack('scripts')
 </html>

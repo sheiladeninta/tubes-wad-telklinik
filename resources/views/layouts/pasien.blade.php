@@ -83,7 +83,7 @@
                 <div class="nav-section-title" style="font-size: 0.8rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Dashboard</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('pasien.dashboard') ? 'active' : '' }}" href="{{ route('pasien.dashboard') }}" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none; {{ request()->routeIs('pasien.dashboard') ? 'background-color: #f8d7da; color: #dc3545; border-left-color: #dc3545; font-weight: 600;' : '' }}">
+                        <a class="nav-link {{ request()->routeIs('pasien.dashboard') ? 'active' : '' }}" href="{{ route('pasien.dashboard') }}" style="color: {{ request()->routeIs('pasien.dashboard') ? '#dc3545' : '#2c3e50' }}; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid {{ request()->routeIs('pasien.dashboard') ? '#dc3545' : 'transparent' }}; display: flex; align-items: center; text-decoration: none; background-color: {{ request()->routeIs('pasien.dashboard') ? '#f8d7da' : 'transparent' }}; font-weight: {{ request()->routeIs('pasien.dashboard') ? '600' : 'normal' }};" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="if (!this.classList.contains('active')) { this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; }">
                             <i class="fas fa-tachometer-alt" style="width: 20px; margin-right: 10px; color: {{ request()->routeIs('pasien.dashboard') ? '#dc3545' : '#6c757d' }};"></i>
                             Dashboard Utama
                         </a>
@@ -96,19 +96,19 @@
                 <div class="nav-section-title" style="font-size: 0.8rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Reservasi</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
+                        <a class="nav-link {{ request()->routeIs('pasien.reservasi.create') ? 'active' : '' }}" href="{{ route('pasien.reservasi.create') }}" style="color: {{ request()->routeIs('pasien.reservasi.create') ? '#dc3545' : '#2c3e50' }}; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid {{ request()->routeIs('pasien.reservasi.create') ? '#dc3545' : 'transparent' }}; display: flex; align-items: center; text-decoration: none; background-color: {{ request()->routeIs('pasien.reservasi.create') ? '#f8d7da' : 'transparent' }}; font-weight: {{ request()->routeIs('pasien.reservasi.create') ? '600' : 'normal' }};" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="if (!this.classList.contains('active')) { this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; }">
                             <i class="fas fa-calendar-plus" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Buat Reservasi
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
+                        <a class="nav-link {{ request()->routeIs('pasien.reservasi.index') ? 'active' : '' }}" href="{{ route('pasien.reservasi.index') }}" style="color: {{ request()->routeIs('pasien.reservasi.index') ? '#dc3545' : '#2c3e50' }}; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid {{ request()->routeIs('pasien.reservasi.index') ? '#dc3545' : 'transparent' }}; display: flex; align-items: center; text-decoration: none; background-color: {{ request()->routeIs('pasien.reservasi.index') ? '#f8d7da' : 'transparent' }}; font-weight: {{ request()->routeIs('pasien.reservasi.index') ? '600' : 'normal' }};" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="if (!this.classList.contains('active')) { this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; }">
                             <i class="fas fa-calendar-check" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Riwayat Reservasi
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
+                        <a class="nav-link {{ request()->routeIs('pasien.reservasi.upcoming') ? 'active' : '' }}" href="{{ route('pasien.reservasi.upcoming') }}" style="color: {{ request()->routeIs('pasien.reservasi.upcoming') ? '#dc3545' : '#2c3e50' }}; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid {{ request()->routeIs('pasien.reservasi.upcoming') ? '#dc3545' : 'transparent' }}; display: flex; align-items: center; text-decoration: none; background-color: {{ request()->routeIs('pasien.reservasi.upcoming') ? '#f8d7da' : 'transparent' }}; font-weight: {{ request()->routeIs('pasien.reservasi.upcoming') ? '600' : 'normal' }};" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="if (!this.classList.contains('active')) { this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; }">
                             <i class="fas fa-clock" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Jadwal Mendatang
                         </a>
@@ -121,27 +121,21 @@
                 <div class="nav-section-title" style="font-size: 0.8rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Kesehatan</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
+                        <a class="nav-link {{ request()->routeIs('pasien.rekam-medis.index') ? 'active' : '' }}" href="{{ route('pasien.rekam-medis.index') }}" style="color: {{ request()->routeIs('pasien.rekam-medis.index') ? '#dc3545' : '#2c3e50' }}; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid {{ request()->routeIs('pasien.rekam-medis.index') ? '#dc3545' : 'transparent' }}; display: flex; align-items: center; text-decoration: none; background-color: {{ request()->routeIs('pasien.rekam-medis.index') ? '#f8d7da' : 'transparent' }}; font-weight: {{ request()->routeIs('pasien.rekam-medis.index') ? '600' : 'normal' }};" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="if (!this.classList.contains('active')) { this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; }">
                             <i class="fas fa-file-medical" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Rekam Medis
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
+                        <a class="nav-link {{ request()->routeIs('pasien.resep-obat.*') ? 'active' : '' }}" href="{{ route('pasien.resep-obat.index') }}" style="color: {{ request()->routeIs('pasien.resep-obat.*') ? '#dc3545' : '#2c3e50' }}; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid {{ request()->routeIs('pasien.resep-obat.*') ? '#dc3545' : 'transparent' }}; display: flex; align-items: center; text-decoration: none; background-color: {{ request()->routeIs('pasien.resep-obat.*') ? '#f8d7da' : 'transparent' }}; font-weight: {{ request()->routeIs('pasien.resep-obat.*') ? '600' : 'normal' }};" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="if (!this.classList.contains('active')) { this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; }">
                             <i class="fas fa-pills" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Resep Obat
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
+                        <a class="nav-link {{ request()->routeIs('pasien.surat-keterangan.index') ? 'active' : '' }}" href="{{ route('pasien.surat-keterangan.index') }}" style="color: {{ request()->routeIs('pasien.surat-keterangan.index') ? '#dc3545' : '#2c3e50' }}; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid {{ request()->routeIs('pasien.surat-keterangan.index') ? '#dc3545' : 'transparent' }}; display: flex; align-items: center; text-decoration: none; background-color: {{ request()->routeIs('pasien.surat-keterangan.index') ? '#f8d7da' : 'transparent' }}; font-weight: {{ request()->routeIs('pasien.surat-keterangan.index') ? '600' : 'normal' }};" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="if (!this.classList.contains('active')) { this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; }">
                             <i class="fas fa-file-alt" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Surat Keterangan
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-chart-line" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Riwayat Kesehatan
                         </a>
                     </li>
                 </ul>
@@ -152,15 +146,9 @@
                 <div class="nav-section-title" style="font-size: 0.8rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Layanan</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
+                        <a class="nav-link {{ request()->routeIs('pasien.consultation.index') ? 'active' : '' }}" href="{{ route('pasien.consultation.index') }}" style="color: {{ request()->routeIs('pasien.consultation.index') ? '#dc3545' : '#2c3e50' }}; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid {{ request()->routeIs('pasien.consultation.index') ? '#dc3545' : 'transparent' }}; display: flex; align-items: center; text-decoration: none; background-color: {{ request()->routeIs('pasien.consultation.index') ? '#f8d7da' : 'transparent' }}; font-weight: {{ request()->routeIs('pasien.consultation.index') ? '600' : 'normal' }};" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="if (!this.classList.contains('active')) { this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; }">
                             <i class="fas fa-comments" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Konsultasi Online
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-download" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Unduh Dokumen
                         </a>
                     </li>
                 </ul>
@@ -198,122 +186,104 @@
     </main>
 
     <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Custom JS -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            const sidebar = document.getElementById('sidebar');
-            const sidebarOverlay = document.getElementById('sidebarOverlay');
-            const mainContent = document.getElementById('mainContent');
-            let sidebarVisible = true;
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        // State untuk menyimpan status sidebar
+        let sidebarCollapsed = false;
+        
+        // Fungsi untuk toggle sidebar
+        function toggleSidebar() {
+            sidebarCollapsed = !sidebarCollapsed;
             
-            // Sidebar toggle functionality
-            if (sidebarToggle) {
-                sidebarToggle.addEventListener('click', function() {
-                    if (window.innerWidth > 768) {
-                        // Desktop behavior
-                        sidebarVisible = !sidebarVisible;
-                        if (sidebarVisible) {
-                            sidebar.style.transform = 'translateX(0)';
-                            mainContent.style.marginLeft = '280px';
-                        } else {
-                            sidebar.style.transform = 'translateX(-100%)';
-                            mainContent.style.marginLeft = '0';
-                        }
-                    } else {
-                        // Mobile behavior
-                        sidebar.classList.toggle('show');
-                        sidebarOverlay.classList.toggle('show');
-                    }
-                });
+            if (sidebarCollapsed) {
+                // Hide sidebar
+                sidebar.style.transform = 'translateX(-100%)';
+                mainContent.style.marginLeft = '0';
+                
+                // Simpan state ke sessionStorage
+                sessionStorage.setItem('sidebarCollapsed', 'true');
+            } else {
+                // Show sidebar
+                sidebar.style.transform = 'translateX(0)';
+                mainContent.style.marginLeft = '280px';
+                
+                // Simpan state ke sessionStorage
+                sessionStorage.setItem('sidebarCollapsed', 'false');
             }
-            
-            if (sidebarOverlay) {
-                sidebarOverlay.addEventListener('click', function() {
-                    sidebar.classList.remove('show');
-                    sidebarOverlay.classList.remove('show');
-                });
+        }
+        
+        // Event listener untuk toggle button
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        
+        // Event listener untuk overlay (mobile)
+        sidebarOverlay.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+                sidebarOverlay.style.display = 'none';
             }
-            
-            // Handle window resize
-            window.addEventListener('resize', function() {
-                if (window.innerWidth <= 768) {
-                    // Mobile mode
-                    sidebar.style.transform = '';
-                    sidebar.classList.remove('show');
-                    sidebarOverlay.classList.remove('show');
-                    sidebarOverlay.style.display = 'none';
-                    mainContent.style.marginLeft = '0';
-                } else {
-                    // Desktop mode
-                    sidebar.classList.remove('show');
-                    sidebarOverlay.classList.remove('show');
-                    sidebarOverlay.style.display = 'none';
-                    if (sidebarVisible) {
-                        sidebar.style.transform = 'translateX(0)';
-                        mainContent.style.marginLeft = '280px';
-                    } else {
-                        sidebar.style.transform = 'translateX(-100%)';
-                        mainContent.style.marginLeft = '0';
-                    }
-                }
-            });
-            
-            // Auto hide alerts after 5 seconds
-            setTimeout(function() {
-                let alerts = document.querySelectorAll('.alert');
-                alerts.forEach(function(alert) {
-                    let bsAlert = new bootstrap.Alert(alert);
-                    bsAlert.close();
-                });
-            }, 5000);
-            
-            // Smooth scrolling for internal links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
         });
         
-        // Add mobile styles for sidebar
-        const mobileStyles = `
-            @media (max-width: 768px) {
-                .sidebar {
-                    transform: translateX(-100%) !important;
+        // Fungsi untuk mengatur responsive behavior
+        function handleResize() {
+            if (window.innerWidth <= 768) {
+                // Mobile view
+                sidebar.style.transform = 'translateX(-100%)';
+                mainContent.style.marginLeft = '0';
+                sidebarOverlay.style.display = 'none';
+            } else {
+                // Desktop view - restore saved state
+                const savedState = sessionStorage.getItem('sidebarCollapsed');
+                
+                if (savedState === 'true') {
+                    sidebar.style.transform = 'translateX(-100%)';
+                    mainContent.style.marginLeft = '0';
+                    sidebarCollapsed = true;
+                } else {
+                    sidebar.style.transform = 'translateX(0)';
+                    mainContent.style.marginLeft = '280px';
+                    sidebarCollapsed = false;
                 }
                 
-                .sidebar.show {
-                    transform: translateX(0) !important;
-                }
-                
-                .main-content {
-                    margin-left: 0 !important;
-                }
-                
-                .content-wrapper {
-                    padding: 1rem !important;
-                }
-                
-                .mobile-sidebar-overlay.show {
-                    display: block !important;
-                }
+                sidebarOverlay.style.display = 'none';
             }
-        `;
+        }
         
-        const styleSheet = document.createElement('style');
-        styleSheet.textContent = mobileStyles;
-        document.head.appendChild(styleSheet);
+        // Handle window resize
+        window.addEventListener('resize', handleResize);
+        
+        // Load saved state on page load
+        const savedState = sessionStorage.getItem('sidebarCollapsed');
+        if (savedState === 'true' && window.innerWidth > 768) {
+            sidebarCollapsed = true;
+            sidebar.style.transform = 'translateX(-100%)';
+            mainContent.style.marginLeft = '0';
+        }
+        
+        // Enhanced mobile toggle
+        if (window.innerWidth <= 768) {
+            sidebarToggle.addEventListener('click', function() {
+                if (sidebar.style.transform === 'translateX(0px)' || sidebar.style.transform === '') {
+                    sidebar.style.transform = 'translateX(-100%)';
+                    sidebarOverlay.style.display = 'none';
+                } else {
+                    sidebar.style.transform = 'translateX(0)';
+                    sidebarOverlay.style.display = 'block';
+                }
+            });
+        }
+        
+        // Initialize responsive behavior
+        handleResize();
+    });
     </script>
-    
     @yield('scripts')
 </body>
+@stack('scripts')
 </html>
