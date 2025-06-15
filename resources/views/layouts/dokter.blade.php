@@ -97,21 +97,9 @@
                 <div class="nav-section-title" style="font-size: 0.8rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Manajemen Pasien</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545'; this.querySelector('i').style.color='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; this.querySelector('i').style.color='#6c757d';">
+                        <a <a class="nav-link {{ request()->routeIs('dokter.reservasi.index') ? 'active' : '' }}" href="{{ route('dokter.reservasi.index') }}" style="color: {{ request()->routeIs('dokter.reservasi.index') ? '#dc3545' : '#2c3e50' }}; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid {{ request()->routeIs('dokter.reservasi.index') ? '#dc3545' : 'transparent' }}; display: flex; align-items: center; text-decoration: none; background-color: {{ request()->routeIs('dokter.reservasi.index') ? '#f8d7da' : 'transparent' }}; font-weight: {{ request()->routeIs('dokter.reservasi.index') ? '600' : 'normal' }};" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="if (!this.classList.contains('active')) { this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; }">
                             <i class="fas fa-users" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Daftar Pasien
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545'; this.querySelector('i').style.color='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; this.querySelector('i').style.color='#6c757d';">
-                            <i class="fas fa-calendar-check" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Jadwal Praktik
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545'; this.querySelector('i').style.color='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; this.querySelector('i').style.color='#6c757d';">
-                            <i class="fas fa-clock" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Antrian Hari Ini
                         </a>
                     </li>
                     <li class="nav-item">
@@ -164,12 +152,6 @@
                             Stok Obat
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545'; this.querySelector('i').style.color='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; this.querySelector('i').style.color='#6c757d';">
-                            <i class="fas fa-chart-bar" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Laporan Resep
-                        </a>
-                    </li>
                 </ul>
             </div>
 
@@ -185,12 +167,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545'; this.querySelector('i').style.color='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; this.querySelector('i').style.color='#6c757d';">
-                            <i class="fas fa-file-signature" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Tanda Tangan Digital
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545'; this.querySelector('i').style.color='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; this.querySelector('i').style.color='#6c757d';">
                             <i class="fas fa-archive" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Arsip Dokumen
                         </a>
@@ -199,7 +175,7 @@
             </div>
 
             <!-- Pengaturan Section -->
-            <div class="nav-section" style="padding: 0 1.5rem; margin-bottom: 1.5rem;">
+            <!-- <div class="nav-section" style="padding: 0 1.5rem; margin-bottom: 1.5rem;">
                 <div class="nav-section-title" style="font-size: 0.8rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Pengaturan</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -221,7 +197,7 @@
                         </a>
                     </li>
                 </ul>
-            </div>
+            </div> -->
         </div>
     </nav>
 

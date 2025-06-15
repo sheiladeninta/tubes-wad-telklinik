@@ -37,6 +37,17 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')->g
     Route::get('/dashboard', [DokterController::class, 'dashboard'])->name('dashboard');
     Route::get('/profile', [DokterController::class, 'profile'])->name('profile');
     Route::put('/profile', [DokterController::class, 'updateProfile'])->name('profile.update');
+
+    // Routes untuk manajemen reservasi dokter
+    Route::prefix('reservasi')->name('reservasi.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Dokter\ReservasiController::class, 'index'])->name('index');
+        Route::get('/today', [App\Http\Controllers\Dokter\ReservasiController::class, 'today'])->name('today');
+        Route::get('/upcoming', [App\Http\Controllers\Dokter\ReservasiController::class, 'upcoming'])->name('upcoming');
+        Route::get('/{reservasi}', [App\Http\Controllers\Dokter\ReservasiController::class, 'show'])->name('show');
+        Route::patch('/{reservasi}/confirm', [App\Http\Controllers\Dokter\ReservasiController::class, 'confirm'])->name('confirm');
+        Route::patch('/{reservasi}/complete', [App\Http\Controllers\Dokter\ReservasiController::class, 'complete'])->name('complete');
+        Route::patch('/{reservasi}/cancel', [App\Http\Controllers\Dokter\ReservasiController::class, 'cancel'])->name('cancel');
+    });
 });
 
 // Pasien Routes
