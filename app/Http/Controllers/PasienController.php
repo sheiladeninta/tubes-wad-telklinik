@@ -1,6 +1,6 @@
 <?php
 
-// app/Http/Controllers/PasienController.php
+// ini untuk dashboard pasien
 
 namespace App\Http\Controllers;
 
