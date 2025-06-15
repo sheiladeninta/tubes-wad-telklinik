@@ -1,5 +1,5 @@
 <?php
-
+// ini untuk dashboard dokter
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
