@@ -1,5 +1,5 @@
 <?php
-
+// ini untuk pasien melihat resep obat
 namespace App\Http\Controllers\Pasien;
 
 use App\Http\Controllers\Controller;
