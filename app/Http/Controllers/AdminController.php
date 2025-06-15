@@ -1,5 +1,5 @@
 <?php
-
+// ini untuk mengantur dashboard admin
 namespace App\Http\Controllers;
 
 use App\Models\User;
