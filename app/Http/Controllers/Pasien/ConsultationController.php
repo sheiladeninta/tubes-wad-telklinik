@@ -1,5 +1,5 @@
 <?php
-
+// sebagai controller pasien melakukan konsultasi chat
 namespace App\Http\Controllers\Pasien;
 
 use App\Http\Controllers\Controller;
