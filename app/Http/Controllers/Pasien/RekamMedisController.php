@@ -1,5 +1,5 @@
 <?php
-
+// ini untuk pasien melakukan cek rekam medis
 namespace App\Http\Controllers\Pasien;
 
 use App\Http\Controllers\Controller;
