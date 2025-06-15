@@ -1,5 +1,5 @@
 <?php
-
+// ini untuk mengatur autentikasi; login dan register
 namespace App\Http\Controllers;
 
 use App\Models\User;
