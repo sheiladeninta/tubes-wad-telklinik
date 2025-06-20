@@ -48,6 +48,16 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')->g
         Route::patch('/{reservasi}/complete', [App\Http\Controllers\Dokter\ReservasiController::class, 'complete'])->name('complete');
         Route::patch('/{reservasi}/cancel', [App\Http\Controllers\Dokter\ReservasiController::class, 'cancel'])->name('cancel');
     });
+
+    // Routes untuk konsultasi online dokter
+    Route::prefix('consultation')->name('consultation.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Dokter\ConsultationController::class, 'index'])->name('index');
+        Route::get('/{consultation}', [App\Http\Controllers\Dokter\ConsultationController::class, 'show'])->name('show');
+        Route::post('/{consultation}/message', [App\Http\Controllers\Dokter\ConsultationController::class, 'sendMessage'])->name('send-message');
+        Route::post('/{consultation}/accept', [App\Http\Controllers\Dokter\ConsultationController::class, 'acceptConsultation'])->name('accept');
+        Route::post('/{consultation}/complete', [App\Http\Controllers\Dokter\ConsultationController::class, 'completeConsultation'])->name('complete');
+        Route::get('/{consultation}/messages', [App\Http\Controllers\Dokter\ConsultationController::class, 'getMessages'])->name('messages');
+    });
 });
 
 // Pasien Routes
