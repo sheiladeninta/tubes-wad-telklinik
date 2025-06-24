@@ -69,7 +69,7 @@ class User extends Authenticatable
     // Relasi untuk resep obat sebagai pasien
     public function resepObat(): HasMany
     {
-        return $this->hasMany(ResepObat::class, 'user_id');
+        return $this->hasMany(ResepObat::class, 'pasien_id');
     }
 
     // Relasi untuk resep obat sebagai dokter

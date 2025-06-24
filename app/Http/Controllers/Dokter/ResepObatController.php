@@ -89,27 +89,58 @@ class ResepObatController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request->validate([
             'pasien_id' => 'required|exists:users,id',
             'reservasi_id' => 'nullable|exists:reservasis,id',
-            'diagnosa' => 'required|string',
-            'catatan_dokter' => 'nullable|string',
+            'diagnosa' => 'required|string|max:1000',
+            'catatan_dokter' => 'nullable|string|max:1000',
             'obat' => 'required|array|min:1',
-            'obat.*.nama' => 'required|string',
-            'obat.*.dosis' => 'required|string',
+            'obat.*.nama' => 'required|string|max:255',
+            'obat.*.dosis' => 'required|string|max:100',
             'obat.*.jumlah' => 'required|integer|min:1',
-            'obat.*.satuan' => 'required|string',
-            'obat.*.aturan_pakai' => 'required|string',
-            'obat.*.keterangan' => 'nullable|string',
+            'obat.*.satuan' => 'required|string|max:50',
+            'obat.*.aturan_pakai' => 'required|string|max:255',
+            'obat.*.keterangan' => 'nullable|string|max:500',
         ]);
 
+        // Validasi tambahan: pastikan pasien_id adalah user dengan role pasien
+        $pasien = User::where('id', $request->pasien_id)
+                    ->where('role', 'pasien')
+                    ->first();
+        
+        if (!$pasien) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Pasien tidak ditemukan atau tidak valid.');
+        }
+
+        // Validasi reservasi jika ada
+        if ($request->filled('reservasi_id')) {
+            $reservasi = Reservasi::where('id', $request->reservasi_id)
+                                ->where('dokter_id', Auth::id())
+                                ->where('status', Reservasi::STATUS_COMPLETED)
+                                ->first();
+            
+            if (!$reservasi) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Reservasi tidak valid atau belum selesai.');
+            }
+        }
+
         DB::beginTransaction();
+        
         try {
+            // Generate nomor resep
+            $nomorResep = $this->generateNomorResep();
+            
             // Create prescription
             $resepObat = ResepObat::create([
                 'pasien_id' => $request->pasien_id,
                 'dokter_id' => Auth::id(),
                 'reservasi_id' => $request->reservasi_id,
+                'nomor_resep' => $nomorResep,
                 'diagnosa' => $request->diagnosa,
                 'catatan_dokter' => $request->catatan_dokter,
                 'status' => ResepObat::STATUS_PENDING,
@@ -117,12 +148,12 @@ class ResepObatController extends Controller
             ]);
 
             // Create prescription details
-            foreach ($request->obat as $obat) {
-                DetailResepObat::create([
+            foreach ($request->obat as $index => $obat) {
+                $detailResep = DetailResepObat::create([
                     'resep_obat_id' => $resepObat->id,
                     'nama_obat' => $obat['nama'],
                     'dosis' => $obat['dosis'],
-                    'jumlah' => $obat['jumlah'],
+                    'jumlah' => (int)$obat['jumlah'],
                     'satuan' => $obat['satuan'],
                     'aturan_pakai' => $obat['aturan_pakai'],
                     'keterangan' => $obat['keterangan'] ?? null,
@@ -133,15 +164,26 @@ class ResepObatController extends Controller
 
             return redirect()->route('dokter.resep-obat.show', $resepObat)
                 ->with('success', 'Resep obat berhasil dibuat.');
-
+                
         } catch (\Exception $e) {
             DB::rollback();
+            
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Gagal membuat resep obat. Silakan coba lagi.');
+                ->with('error', 'Gagal membuat resep obat: ' . $e->getMessage());
         }
     }
-
+    /**
+     * Generate nomor resep yang unik
+     */
+    private function generateNomorResep()
+    {
+        $date = now()->format('Ymd');
+        $time = now()->format('His'); // jam-menit-detik
+        $mikroDetik = substr(microtime(), 2, 3); // 3 digit mikrodetik
+        
+        return 'RSP-' . $date . '-' . $time . $mikroDetik;
+    }
     /**
      * Display the specified resource.
      */

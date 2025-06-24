@@ -36,6 +36,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('obat', ObatController::class);
     Route::post('/obat/{id}/update-stock', [ObatController::class, 'updateStock'])->name('obat.updateStock');
     Route::get('/api/obat/dashboard-data', [ObatController::class, 'getDashboardData'])->name('obat.dashboard-data');
+    // Reservasi Management Routes
+    Route::get('/reservasi', [App\Http\Controllers\Admin\ReservasiController::class, 'index'])->name('reservasi.index');
+    Route::get('/reservasi/{reservasi}', [App\Http\Controllers\Admin\ReservasiController::class, 'show'])->name('reservasi.show');
+    // Resep Obat Management Routes
+    Route::get('/resep-obat', [App\Http\Controllers\Admin\ReservasiController::class, 'resepObat'])->name('resep-obat.index');
+    Route::patch('/resep-obat/{resepObat}/status', [App\Http\Controllers\Admin\ReservasiController::class, 'updateResepStatus'])->name('resep-obat.updateStatus');
 });
 
 // Dokter Routes

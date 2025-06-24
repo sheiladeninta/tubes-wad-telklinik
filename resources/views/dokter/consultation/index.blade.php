@@ -1,3 +1,6 @@
+@php
+    use Illuminate\Support\Str;
+@endphp
 @extends('layouts.dokter')
 @section('title', 'Konsultasi Online - Tel-Klinik')
 @section('content')

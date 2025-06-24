@@ -182,7 +182,12 @@
                                 @endif
                             </div>
                             <input type="hidden" name="pasien_id" value="{{ $reservasi->user_id }}">
-                            <input type="hidden" name="reservasi_id" value="{{ $reservasi->id }}">
+                            @if($reservasi)
+                                <input type="hidden" name="reservasi_id" value="{{ $reservasi->id }}">
+                            @else
+                                <!-- Tambahkan input untuk reservasi_id jika pilih pasien manual -->
+                                <input type="hidden" name="reservasi_id" value="">
+                            @endif
                         @else
                             <!-- Select patient manually -->
                             <div class="form-floating mb-3">
