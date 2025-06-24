@@ -1,5 +1,4 @@
 @extends('layouts.admin')
-
 @section('title', 'Manajemen Reservasi & Resep Obat')
 
 @section('content')
@@ -248,7 +247,7 @@
                     </tbody>
                 </table>
             </div>
-
+            
             <!-- Pagination -->
             @if($reservasis->hasPages())
                 <div class="d-flex justify-content-center mt-4">
@@ -279,15 +278,6 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group" id="farmasiGroup" style="display: none;">
-                        <label>Farmasi</label>
-                        <select class="form-control" name="farmasi_id" id="farmasi_id">
-                            <option value="">Pilih Farmasi</option>
-                            @foreach(\App\Models\User::where('role', 'farmasi')->get() as $farmasi)
-                                <option value="{{ $farmasi->id }}">{{ $farmasi->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
                     <div class="form-group">
                         <label>Catatan (Opsional)</label>
                         <textarea class="form-control" name="catatan" rows="3" 
@@ -302,7 +292,6 @@
         </div>
     </div>
 </div>
-
 @endsection
 
 @push('scripts')
@@ -314,38 +303,37 @@ function showUpdateStatusModal(resepId) {
     $('#updateStatusModal').modal('show');
 }
 
-// Show/hide farmasi field based on status
-$('#status').change(function() {
-    const status = $(this).val();
-    if (status === 'diproses' || status === 'siap') {
-        $('#farmasiGroup').show();
-        $('#farmasi_id').prop('required', true);
-    } else {
-        $('#farmasiGroup').hide();
-        $('#farmasi_id').prop('required', false);
-    }
-});
-
 // Handle form submission
 $('#updateStatusForm').submit(function(e) {
     e.preventDefault();
     
-    if (!currentResepId) return;
+    if (!currentResepId) {
+        alert('ID resep tidak valid');
+        return;
+    }
     
     const formData = new FormData(this);
     
+    // Setup CSRF token
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
     
+    // Disable submit button to prevent double submission
+    const submitBtn = $(this).find('button[type="submit"]');
+    const originalText = submitBtn.text();
+    submitBtn.prop('disabled', true).text('Memproses...');
+    
     $.ajax({
-        url: `/admin/resep-obat/${currentResepId}/update-status`,
-        method: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
+        url: `/admin/resep-obat/${currentResepId}/status`, // Sesuaikan dengan route yang benar
+        method: 'PATCH', // Gunakan PATCH sesuai dengan route
+        data: {
+            status: formData.get('status'),
+            catatan: formData.get('catatan'),
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
         success: function(response) {
             if (response.success) {
                 // Update badge in table
@@ -356,17 +344,41 @@ $('#updateStatusForm').submit(function(e) {
                 
                 $('#updateStatusModal').modal('hide');
                 
-                // Show success message
-                alert('Status resep obat berhasil diperbarui!');
+                // Show success message with better UX
+                showAlert('success', 'Status resep obat berhasil diperbarui!');
                 
                 // Reset form
                 $('#updateStatusForm')[0].reset();
-                $('#farmasiGroup').hide();
+                
+                // Optional: reload page after short delay to refresh statistics
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
+            } else {
+                showAlert('error', response.message || 'Gagal memperbarui status');
             }
         },
         error: function(xhr) {
-            alert('Terjadi kesalahan saat memperbarui status.');
-            console.error(xhr.responseText);
+            console.error('Error details:', xhr.responseText);
+            let errorMessage = 'Terjadi kesalahan saat memperbarui status.';
+            
+            if (xhr.status === 422) {
+                // Validation errors
+                const errors = xhr.responseJSON?.errors;
+                if (errors) {
+                    errorMessage = Object.values(errors).flat().join('\n');
+                }
+            } else if (xhr.status === 404) {
+                errorMessage = 'Resep obat tidak ditemukan.';
+            } else if (xhr.status === 500) {
+                errorMessage = 'Terjadi kesalahan server. Silakan coba lagi.';
+            }
+            
+            showAlert('error', errorMessage);
+        },
+        complete: function() {
+            // Re-enable submit button
+            submitBtn.prop('disabled', false).text(originalText);
         }
     });
 });
@@ -374,8 +386,31 @@ $('#updateStatusForm').submit(function(e) {
 // Reset modal when closed
 $('#updateStatusModal').on('hidden.bs.modal', function() {
     $('#updateStatusForm')[0].reset();
-    $('#farmasiGroup').hide();
     currentResepId = null;
 });
+
+// Helper function to show alerts
+function showAlert(type, message) {
+    const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+    const alertHtml = `
+        <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `;
+    
+    // Remove existing alerts
+    $('.alert').remove();
+    
+    // Add new alert at the top of container
+    $('.container-fluid').prepend(alertHtml);
+    
+    // Auto dismiss after 5 seconds
+    setTimeout(() => {
+        $('.alert').fadeOut();
+    }, 5000);
+}
 </script>
 @endpush

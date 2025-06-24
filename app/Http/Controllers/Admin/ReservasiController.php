@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -46,6 +45,7 @@ class ReservasiController extends Controller
         if ($request->filled('tanggal_dari')) {
             $query->whereDate('tanggal_reservasi', '>=', $request->tanggal_dari);
         }
+
         if ($request->filled('tanggal_sampai')) {
             $query->whereDate('tanggal_reservasi', '<=', $request->tanggal_sampai);
         }
@@ -78,7 +78,7 @@ class ReservasiController extends Controller
             'user', 
             'dokter', 
             'resepObat' => function($q) {
-                $q->with(['detailResep', 'farmasi']);
+                $q->with('detailResep');
             }
         ]);
 
@@ -92,20 +92,12 @@ class ReservasiController extends Controller
     {
         $request->validate([
             'status' => 'required|in:' . implode(',', array_keys(ResepObat::getStatusOptions())),
-            'farmasi_id' => 'nullable|exists:users,id',
             'catatan' => 'nullable|string|max:500'
         ]);
 
         $updateData = [
             'status' => $request->status
         ];
-
-        // Set farmasi_id if status is diproses or siap
-        if (in_array($request->status, [ResepObat::STATUS_DIPROSES, ResepObat::STATUS_SIAP])) {
-            if ($request->filled('farmasi_id')) {
-                $updateData['farmasi_id'] = $request->farmasi_id;
-            }
-        }
 
         // Set tanggal_ambil if status is diambil
         if ($request->status === ResepObat::STATUS_DIAMBIL) {
@@ -148,7 +140,7 @@ class ReservasiController extends Controller
      */
     public function resepObat(Request $request)
     {
-        $query = ResepObat::with(['pasien', 'dokter', 'detailResep', 'reservasi', 'farmasi'])
+        $query = ResepObat::with(['pasien', 'dokter', 'detailResep', 'reservasi'])
             ->orderBy('tanggal_resep', 'desc');
 
         // Filter by status
@@ -165,6 +157,7 @@ class ReservasiController extends Controller
         if ($request->filled('tanggal_dari')) {
             $query->whereDate('tanggal_resep', '>=', $request->tanggal_dari);
         }
+
         if ($request->filled('tanggal_sampai')) {
             $query->whereDate('tanggal_resep', '<=', $request->tanggal_sampai);
         }
@@ -181,10 +174,9 @@ class ReservasiController extends Controller
 
         $resepObat = $query->paginate(15)->withQueryString();
 
-        // Get doctors and pharmacists for filters
+        // Get doctors for filters
         $dokters = User::where('role', 'dokter')->orderBy('name')->get();
-        $farmasis = User::where('role', 'farmasi')->orderBy('name')->get();
 
-        return view('admin.resep-obat.index', compact('resepObat', 'dokters', 'farmasis'));
+        return view('admin.resep-obat.index', compact('resepObat', 'dokters'));
     }
 }

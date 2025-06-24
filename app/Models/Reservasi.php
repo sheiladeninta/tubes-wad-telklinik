@@ -54,15 +54,15 @@ class Reservasi extends Model
     {
         switch ($this->status) {
             case self::STATUS_PENDING:
-                return 'bg-warning';
+                return 'warning';
             case self::STATUS_CONFIRMED:
-                return 'bg-success';
+                return 'success';
             case self::STATUS_COMPLETED:
-                return 'bg-info';
+                return 'info';
             case self::STATUS_CANCELLED:
-                return 'bg-danger';
+                return 'danger';
             default:
-                return 'bg-secondary';
+                return 'secondary';
         }
     }
 

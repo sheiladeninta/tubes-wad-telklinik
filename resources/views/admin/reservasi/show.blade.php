@@ -13,7 +13,6 @@
             </ol>
         </nav>
     </div>
-
     <div class="row">
         <!-- Reservasi Information -->
         <div class="col-lg-6 mb-4">
@@ -59,7 +58,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Patient Complaint -->
         <div class="col-lg-6 mb-4">
             <div class="card shadow">
@@ -72,7 +70,6 @@
             </div>
         </div>
     </div>
-
     @if($reservasi->resepObat)
         <div class="row">
             <!-- Prescription Information -->
@@ -110,15 +107,9 @@
                             </div>
                             <div class="col-md-6">
                                 <table class="table table-borderless table-sm">
-                                    @if($reservasi->resepObat->farmasi)
-                                        <tr>
-                                            <td width="40%"><strong>Farmasi</strong></td>
-                                            <td>{{ $reservasi->resepObat->farmasi->name }}</td>
-                                        </tr>
-                                    @endif
                                     @if($reservasi->resepObat->tanggal_ambil)
                                         <tr>
-                                            <td><strong>Tanggal Ambil</strong></td>
+                                            <td width="40%"><strong>Tanggal Ambil</strong></td>
                                             <td>{{ $reservasi->resepObat->tanggal_ambil->format('d F Y H:i') }}</td>
                                         </tr>
                                     @endif
@@ -134,7 +125,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Quick Actions -->
             <div class="col-lg-4 mb-4">
                 <div class="card shadow">
@@ -160,7 +150,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Prescription Details -->
         @if($reservasi->resepObat->detailResep && $reservasi->resepObat->detailResep->count() > 0)
             <div class="row">
@@ -212,7 +201,6 @@
             </div>
         </div>
     @endif
-
     <!-- Back Button -->
     <div class="row mt-4">
         <div class="col-12">
@@ -222,7 +210,6 @@
         </div>
     </div>
 </div>
-
 <!-- Update Status Modal -->
 <div class="modal fade" id="updateStatusModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -245,13 +232,6 @@
                             <option value="diambil">Sudah Diambil</option>
                         </select>
                     </div>
-                    <div class="form-group" id="farmasiGroup" style="display: none;">
-                        <label for="farmasi_id">Farmasi</label>
-                        <select class="form-control" id="farmasi_id" name="farmasi_id">
-                            <option value="">Pilih Farmasi</option>
-                            <!-- Options will be populated via JavaScript -->
-                        </select>
-                    </div>
                     <div class="form-group">
                         <label for="catatan">Catatan (Opsional)</label>
                         <textarea class="form-control" id="catatan" name="catatan" rows="3" 
@@ -266,23 +246,19 @@
         </div>
     </div>
 </div>
-
 @endsection
-
 @push('scripts')
 <script>
 let currentResepId = null;
-
 function showUpdateStatusModal(resepId) {
     currentResepId = resepId;
     $('#updateStatusModal').modal('show');
 }
-
-function updateStatus(resepId, status) {
+function updateStatus(currentResepId, status) {
     if (confirm('Apakah Anda yakin ingin mengubah status resep?')) {
         $.ajax({
-            url: `/admin/resep-obat/${resepId}/update-status`,
-            method: 'PUT',
+            url: `/admin/resep-obat/${currentResepId}/status`,
+            method: 'PATCH',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -292,7 +268,7 @@ function updateStatus(resepId, status) {
             success: function(response) {
                 if (response.success) {
                     // Update status badge
-                    $(`#status-badge-${resepId}`)
+                    $(`#status-badge-${currentResepId}`)
                         .removeClass()
                         .addClass(`badge badge-${response.status_color}`)
                         .text(response.status_label);
@@ -314,21 +290,19 @@ function updateStatus(resepId, status) {
         });
     }
 }
-
 $('#updateStatusForm').on('submit', function(e) {
     e.preventDefault();
     
     const formData = new FormData(this);
     
     $.ajax({
-        url: `/admin/resep-obat/${currentResepId}/update-status`,
-        method: 'PUT',
+        url: `/admin/resep-obat/${currentResepId}/status`,
+        method: 'PATCH',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         data: {
             status: formData.get('status'),
-            farmasi_id: formData.get('farmasi_id'),
             catatan: formData.get('catatan')
         },
         success: function(response) {
@@ -364,32 +338,6 @@ $('#updateStatusForm').on('submit', function(e) {
         }
     });
 });
-
-// Show/hide farmasi dropdown based on status
-$('#status').on('change', function() {
-    const status = $(this).val();
-    const farmasiGroup = $('#farmasiGroup');
-    
-    if (status === 'diproses' || status === 'siap') {
-        farmasiGroup.show();
-        $('#farmasi_id').prop('required', true);
-        loadFarmasisOptions();
-    } else {
-        farmasiGroup.hide();
-        $('#farmasi_id').prop('required', false);
-    }
-});
-
-function loadFarmasisOptions() {
-    // This would typically load from your API
-    // For now, you can populate this manually or via AJAX
-    const farmasisSelect = $('#farmasi_id');
-    farmasisSelect.empty().append('<option value="">Pilih Farmasi</option>');
-    
-    // You can populate this with actual farmasi data
-    // Example: farmasisSelect.append('<option value="1">Farmasi Name</option>');
-}
-
 function showAlert(type, message) {
     const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
     const alertIcon = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-triangle';
@@ -411,11 +359,9 @@ function showAlert(type, message) {
         $('.alert').alert('close');
     }, 5000);
 }
-
 // Reset modal form when closed
 $('#updateStatusModal').on('hidden.bs.modal', function() {
     $('#updateStatusForm')[0].reset();
-    $('#farmasiGroup').hide();
     currentResepId = null;
 });
 </script>
