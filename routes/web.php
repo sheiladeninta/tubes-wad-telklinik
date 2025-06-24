@@ -9,6 +9,7 @@ use App\Http\Controllers\Pasien\RekamMedisController;
 use App\Http\Controllers\Pasien\ResepObatController;
 use App\Http\Controllers\Pasien\RequestSuratKeteranganController;
 use App\Http\Controllers\Pasien\ConsultationController;
+use App\Http\Controllers\Admin\ObatController;
 use App\Http\Middleware\CheckRole;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 // Admin Routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+     // Obat Management Routes
+    Route::resource('obat', ObatController::class);
+    Route::post('/obat/{id}/update-stock', [ObatController::class, 'updateStock'])->name('obat.updateStock');
+    Route::get('/api/obat/dashboard-data', [ObatController::class, 'getDashboardData'])->name('obat.dashboard-data');
 });
 
 // Dokter Routes

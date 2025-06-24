@@ -76,7 +76,7 @@ class Reservasi extends Model
         return $this->belongsTo(User::class, 'dokter_id');
     }
 
-        public function rekamMedis(): HasOne
+    public function rekamMedis(): HasOne
     {
         return $this->hasOne(RekamMedis::class);
     }
