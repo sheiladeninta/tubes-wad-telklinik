@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ResepObatController extends Controller
 {
@@ -76,12 +77,21 @@ class ResepObatController extends Controller
         $pasienList = User::pasien()
             ->whereHas('reservasi', function($query) {
                 $query->where('dokter_id', Auth::id())
-                      ->where('status', Reservasi::STATUS_COMPLETED);
+                    ->where('status', Reservasi::STATUS_COMPLETED);
             })
             ->orderBy('name')
             ->get();
 
-        return view('dokter.resep-obat.create', compact('reservasi', 'pasienList'));
+        // Get all completed reservations for this doctor (for manual selection)
+        $reservasiList = Reservasi::with(['user'])
+            ->where('dokter_id', Auth::id())
+            ->where('status', Reservasi::STATUS_COMPLETED)
+            ->whereDoesntHave('resepObat') // Hanya reservasi yang belum ada resepnya
+            ->orderBy('tanggal_reservasi', 'desc')
+            ->orderBy('jam_reservasi', 'desc')
+            ->get();
+
+        return view('dokter.resep-obat.create', compact('reservasi', 'pasienList', 'reservasiList'));
     }
 
     /**
@@ -354,5 +364,73 @@ class ResepObatController extends Controller
             ->get(['id', 'name', 'user_type']);
 
         return response()->json($pasien);
+    }
+
+    /**
+     * Get reservations for selected patient (AJAX)
+     */
+    public function getReservasiByPasien(Request $request)
+    {
+        $pasienId = $request->get('pasien_id');
+        
+        if (!$pasienId) {
+            return response()->json([]);
+        }
+
+        $reservasi = Reservasi::with(['user'])
+            ->where('dokter_id', Auth::id())
+            ->where('user_id', $pasienId)
+            ->where('status', Reservasi::STATUS_COMPLETED)
+            ->whereDoesntHave('resepObat') // Hanya yang belum ada resepnya
+            ->orderBy('tanggal_reservasi', 'desc')
+            ->orderBy('jam_reservasi', 'desc')
+            ->get()
+            ->map(function($item) {
+                return [
+                    'id' => $item->id,
+                    'tanggal' => $item->tanggal_reservasi->format('d/m/Y'),
+                    'waktu' => $item->jam_reservasi,
+                    'keluhan' => $item->keluhan,
+                    'text' => $item->tanggal_reservasi->format('d/m/Y') . ' - ' . $item->jam_reservasi . ' (' . Str::limit($item->keluhan, 50) . ')'
+                ];
+            });
+
+        return response()->json($reservasi);
+    }
+
+    /**
+     * Get reservation details (AJAX)
+     */
+    public function getReservasiDetail(Request $request)
+    {
+        $reservasiId = $request->get('reservasi_id');
+        
+        if (!$reservasiId) {
+            return response()->json(['error' => 'Reservasi ID tidak ditemukan'], 400);
+        }
+
+        $reservasi = Reservasi::with(['user'])
+            ->where('id', $reservasiId)
+            ->where('dokter_id', Auth::id())
+            ->where('status', Reservasi::STATUS_COMPLETED)
+            ->first();
+
+        if (!$reservasi) {
+            return response()->json(['error' => 'Reservasi tidak ditemukan'], 404);
+        }
+
+        return response()->json([
+            'id' => $reservasi->id,
+            'pasien' => [
+                'id' => $reservasi->user->id,
+                'name' => $reservasi->user->name,
+                'user_type' => $reservasi->user->user_type,
+                'user_type_display' => $reservasi->user->user_type_display
+            ],
+            'tanggal_reservasi' => $reservasi->tanggal_reservasi->format('d/m/Y'),
+            'jam_reservasi' => $reservasi->jam_reservasi,
+            'keluhan' => $reservasi->keluhan,
+            'diagnosis' => $reservasi->diagnosis
+        ]);
     }
 }

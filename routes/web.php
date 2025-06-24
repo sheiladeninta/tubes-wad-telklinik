@@ -91,6 +91,9 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')->g
         Route::get('/{resepObat}/edit', [App\Http\Controllers\Dokter\ResepObatController::class, 'edit'])->name('edit');
         Route::put('/{resepObat}', [App\Http\Controllers\Dokter\ResepObatController::class, 'update'])->name('update');
         Route::delete('/{resepObat}', [App\Http\Controllers\Dokter\ResepObatController::class, 'destroy'])->name('destroy');
+        Route::get('/ajax/pasien', [App\Http\Controllers\Dokter\ResepObatController::class, 'getPasien'])->name('ajax.pasien');
+        Route::get('/ajax/reservasi-by-pasien', [App\Http\Controllers\Dokter\ResepObatController::class, 'getReservasiByPasien'])->name('ajax.reservasi-by-pasien');
+        Route::get('/ajax/reservasi-detail', [App\Http\Controllers\Dokter\ResepObatController::class, 'getReservasiDetail'])->name('ajax.reservasi-detail');
     });
 
     // Routes untuk manajemen obat oleh dokter (READ ONLY)

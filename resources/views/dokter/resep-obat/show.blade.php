@@ -1,7 +1,5 @@
 @extends('layouts.dokter')
-
 @section('title', 'Detail Resep Obat')
-
 @section('content')
 <div class="container-fluid">
     <div class="row">
@@ -60,17 +58,29 @@
                                                 @endswitch
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td><strong>Dokter:</strong></td>
+                                            <td>{{ $resepObat->dokter->name ?? 'N/A' }}</td>
+                                        </tr>
                                         @if($resepObat->reservasi)
                                         <tr>
-                                            <td><strong>Reservasi:</strong></td>
-                                            <td>{{ $resepObat->reservasi->nomor_reservasi }}</td>
+                                            <td><strong>Tanggal Reservasi:</strong></td>
+                                            <td>{{ \Carbon\Carbon::parse($resepObat->reservasi->tanggal_reservasi)->format('d M Y') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Jam Reservasi:</strong></td>
+                                            <td>{{ $resepObat->reservasi->jam_reservasi }}</td>
+                                        </tr>
+                                        @else
+                                        <tr>
+                                            <td><strong>Jenis Resep:</strong></td>
+                                            <td><span class="badge badge-info">Resep Langsung</span></td>
                                         </tr>
                                         @endif
                                     </table>
                                 </div>
                             </div>
                         </div>
-
                         <!-- Informasi Pasien -->
                         <div class="col-md-6">
                             <div class="card">
@@ -87,6 +97,16 @@
                                             <td><strong>Email:</strong></td>
                                             <td>{{ $resepObat->pasien->email }}</td>
                                         </tr>
+                                        @if($resepObat->pasien->user_type)
+                                        <tr>
+                                            <td><strong>Tipe Pasien:</strong></td>
+                                            <td>
+                                                <span class="badge badge-primary">
+                                                    {{ $resepObat->pasien->user_type_display ?? ucfirst($resepObat->pasien->user_type) }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @endif
                                         @if($resepObat->pasien->phone)
                                         <tr>
                                             <td><strong>Telepon:</strong></td>
@@ -104,6 +124,22 @@
                             </div>
                         </div>
                     </div>
+
+                    @if($resepObat->reservasi && $resepObat->reservasi->keluhan)
+                    <!-- Keluhan Pasien dari Reservasi -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Keluhan Pasien</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>{{ $resepObat->reservasi->keluhan }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
 
                     <!-- Diagnosa -->
                     <div class="row mt-4">
@@ -143,6 +179,7 @@
                                     <h5 class="card-title">Daftar Obat</h5>
                                 </div>
                                 <div class="card-body">
+                                    @if($resepObat->detailResep && $resepObat->detailResep->count() > 0)
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
                                             <thead class="bg-light">
@@ -162,7 +199,7 @@
                                                     <td>{{ $index + 1 }}</td>
                                                     <td><strong>{{ $detail->nama_obat }}</strong></td>
                                                     <td>{{ $detail->dosis }}</td>
-                                                    <td>{{ $detail->jumlah }}</td>
+                                                    <td>{{ number_format($detail->jumlah) }}</td>
                                                     <td>{{ $detail->satuan }}</td>
                                                     <td>{{ $detail->aturan_pakai }}</td>
                                                     <td>{{ $detail->keterangan ?? '-' }}</td>
@@ -171,6 +208,12 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    @else
+                                    <div class="alert alert-warning">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        Tidak ada detail obat yang ditemukan untuk resep ini.
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -214,6 +257,19 @@
                         </div>
                     </div>
                     @endif
+
+                    @if($resepObat->status == 'pending')
+                    <!-- Alert untuk resep pending -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                <strong>Informasi:</strong> Resep ini masih dalam status pending dan dapat diubah atau dihapus. 
+                                Setelah diproses oleh farmasi, resep tidak dapat diubah lagi.
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -225,7 +281,8 @@
     @media print {
         .card-header,
         .btn,
-        .no-print {
+        .no-print,
+        .alert {
             display: none !important;
         }
         
@@ -242,7 +299,31 @@
             font-size: 14px;
             padding: 8px 12px;
         }
+        
+        body {
+            font-size: 12px;
+        }
+        
+        .card-title {
+            font-size: 14px;
+            font-weight: bold;
+        }
+    }
+    
+    .badge-lg {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .table-borderless td {
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .table-borderless td:first-child {
+        width: 35%;
+        vertical-align: top;
     }
 </style>
 @endpush
+
 @endsection

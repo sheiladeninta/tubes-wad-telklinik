@@ -149,11 +149,11 @@
                     <div class="card-body">
                         <h5 class="card-title mb-3">
                             <i class="fas fa-user-injured me-2 text-primary"></i>
-                            Informasi Pasien
+                            Informasi Pasien & Reservasi
                         </h5>
+                        
                         @if($reservasi)
-                            <!-- Reservasi dari parameter URL -->
-                            <input type="hidden" name="reservasi_id" value="{{ $reservasi->id }}">
+                            <!-- Pre-selected patient from reservation -->
                             <div class="patient-info">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -172,7 +172,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <strong>Waktu:</strong><br>
-                                        <span class="text-dark">{{ $reservasi->waktu_reservasi }}</span>
+                                        <span class="text-dark">{{ $reservasi->jam_reservasi }}</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <strong>Keluhan:</strong><br>
+                                        <span class="text-dark">{{ $reservasi->keluhan }}</span>
                                     </div>
                                 </div>
                                 @if($reservasi->user->user_type === 'lansia')
@@ -183,25 +189,79 @@
                                 @endif
                             </div>
                             <input type="hidden" name="pasien_id" value="{{ $reservasi->user_id }}">
+                            <input type="hidden" name="reservasi_id" value="{{ $reservasi->id }}">
                         @else
-                            <!-- Pilih pasien manual -->
-                            <div class="form-floating mb-3">
-                                <select class="form-select @error('pasien_id') is-invalid @enderror" 
-                                        name="pasien_id" id="pasien_id" required>
-                                    <option value="">Pilih Pasien</option>
-                                    @foreach($pasienList as $pasien)
-                                        <option value="{{ $pasien->id }}" 
-                                                data-type="{{ $pasien->user_type }}"
-                                                {{ old('pasien_id') == $pasien->id ? 'selected' : '' }}>
-                                            {{ $pasien->name }} - {{ $pasien->user_type_display }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <label for="pasien_id">Pasien <span class="required">*</span></label>
-                                @error('pasien_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            <!-- Manual selection -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select @error('pasien_id') is-invalid @enderror" 
+                                                name="pasien_id" id="pasien_id" required>
+                                            <option value="">Pilih Pasien</option>
+                                            @foreach($pasienList as $pasien)
+                                                <option value="{{ $pasien->id }}" 
+                                                        data-type="{{ $pasien->user_type }}"
+                                                        {{ old('pasien_id') == $pasien->id ? 'selected' : '' }}>
+                                                    {{ $pasien->name }} - {{ $pasien->user_type_display }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <label for="pasien_id">Pasien <span class="required">*</span></label>
+                                        @error('pasien_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select @error('reservasi_id') is-invalid @enderror" 
+                                                name="reservasi_id" id="reservasi_id">
+                                            <option value="">Pilih Reservasi (Opsional)</option>
+                                        </select>
+                                        <label for="reservasi_id">Reservasi</label>
+                                        @error('reservasi_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        <div class="form-text">
+                                            <small class="text-muted">
+                                                <i class="fas fa-info-circle me-1"></i>
+                                                Pilih reservasi untuk mengisi otomatis keluhan dan diagnosis
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
+                            <!-- Reservation Details (Hidden by default) -->
+                            <div id="reservationDetails" class="patient-info" style="display: none;">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-calendar-check me-2"></i>
+                                    Detail Reservasi Terpilih
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong>Tanggal:</strong><br>
+                                        <span id="detailTanggal" class="text-dark">-</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Waktu:</strong><br>
+                                        <span id="detailWaktu" class="text-dark">-</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <strong>Keluhan Awal:</strong><br>
+                                        <span id="detailKeluhan" class="text-dark">-</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2" id="detailDiagnosisRow" style="display: none;">
+                                    <div class="col-12">
+                                        <strong>Diagnosis Sebelumnya:</strong><br>
+                                        <span id="detailDiagnosis" class="text-dark">-</span>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div id="pasienAlert" class="alert alert-info" style="display: none;">
                                 <i class="fas fa-info-circle me-2"></i>
                                 <span id="pasienAlertText"></span>
@@ -379,13 +439,20 @@ $(document).ready(function() {
     // Add initial obat item
     addObatItem();
     
-    // Patient selection change handler (only for manual selection)
+    // Patient selection change handler
     $('#pasien_id').change(function() {
         const selectedOption = $(this).find('option:selected');
         const patientType = selectedOption.data('type');
+        const pasienId = $(this).val();
         const alertDiv = $('#pasienAlert');
         const alertText = $('#pasienAlertText');
+        const reservasiSelect = $('#reservasi_id');
         
+        // Reset reservasi dropdown
+        reservasiSelect.html('<option value="">Pilih Reservasi (Opsional)</option>');
+        $('#reservationDetails').hide();
+        
+        // Show patient type alert
         if (patientType === 'lansia') {
             alertText.text('Perhatian: Pasien lansia memerlukan perhatian khusus dalam pemberian dosis obat.');
             alertDiv.removeClass('alert-warning').addClass('alert-info').show();
@@ -395,7 +462,116 @@ $(document).ready(function() {
         } else {
             alertDiv.hide();
         }
+        
+        // Load reservations for selected patient
+        if (pasienId) {
+            loadReservasiByPasien(pasienId);
+        }
     });
+    
+    // Reservation selection change handler
+    $('#reservasi_id').change(function() {
+        const reservasiId = $(this).val();
+        
+        if (reservasiId) {
+            loadReservasiDetail(reservasiId);
+        } else {
+            $('#reservationDetails').hide();
+            // Clear auto-filled fields
+            $('#keluhan').val('');
+            $('#diagnosa').val('');
+        }
+    });
+    
+    // Load reservations by patient
+    function loadReservasiByPasien(pasienId) {
+        const reservasiSelect = $('#reservasi_id');
+        
+        // Show loading
+        reservasiSelect.html('<option value="">Loading...</option>');
+        reservasiSelect.prop('disabled', true);
+        
+        $.ajax({
+            url: '{{ route("dokter.resep-obat.ajax.reservasi-by-pasien") }}',
+            method: 'GET',
+            data: { pasien_id: pasienId },
+            success: function(data) {
+                reservasiSelect.html('<option value="">Pilih Reservasi (Opsional)</option>');
+                
+                if (data.length > 0) {
+                    $.each(data, function(index, reservasi) {
+                        reservasiSelect.append(
+                            `<option value="${reservasi.id}">${reservasi.text}</option>`
+                        );
+                    });
+                    reservasiSelect.prop('disabled', false);
+                } else {
+                    reservasiSelect.html('<option value="">Tidak ada reservasi tersedia</option>');
+                }
+            },
+            error: function() {
+                reservasiSelect.html('<option value="">Error loading data</option>');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Gagal memuat data reservasi.',
+                    confirmButtonColor: '#667eea'
+                });
+            }
+        });
+    }
+    
+    // Load reservation detail
+    function loadReservasiDetail(reservasiId) {
+        $.ajax({
+            url: '{{ route("dokter.resep-obat.ajax.reservasi-detail") }}',
+            method: 'GET',
+            data: { reservasi_id: reservasiId },
+            success: function(data) {
+                // Update detail display
+                $('#detailTanggal').text(data.tanggal_reservasi);
+                $('#detailWaktu').text(data.jam_reservasi);
+                $('#detailKeluhan').text(data.keluhan || '-');
+                
+                if (data.diagnosis) {
+                    $('#detailDiagnosis').text(data.diagnosis);
+                    $('#detailDiagnosisRow').show();
+                } else {
+                    $('#detailDiagnosisRow').hide();
+                }
+                
+                // Auto-fill form fields
+                $('#keluhan').val(data.keluhan || '');
+                if (data.diagnosis) {
+                    $('#diagnosa').val(data.diagnosis);
+                }
+                
+                // Show reservation details
+                $('#reservationDetails').fadeIn();
+                
+                // Update patient type alert if needed
+                const patientType = data.pasien.user_type;
+                const alertDiv = $('#pasienAlert');
+                const alertText = $('#pasienAlertText');
+                
+                if (patientType === 'lansia') {
+                    alertText.text('Perhatian: Pasien lansia memerlukan perhatian khusus dalam pemberian dosis obat.');
+                    alertDiv.removeClass('alert-warning').addClass('alert-info').show();
+                } else if (patientType === 'balita') {
+                    alertText.text('Perhatian: Pasien balita memerlukan dosis khusus sesuai berat badan dan usia.');
+                    alertDiv.removeClass('alert-info').addClass('alert-warning').show();
+                }
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Gagal memuat detail reservasi.',
+                    confirmButtonColor: '#667eea'
+                });
+            }
+        });
+    }
     
     // Add obat item
     $('#addObat').click(function() {
@@ -449,8 +625,6 @@ $(document).ready(function() {
     // Form validation
     $('#resepForm').submit(function(e) {
         let isValid = true;
-        const submitBtn = $('#submitBtn');
-        const spinner = submitBtn.find('.loading-spinner');
         
         // Check if at least one obat is added
         if ($('.obat-item').length === 0) {
@@ -520,28 +694,6 @@ $(document).ready(function() {
     // Remove beforeunload when form is submitted
     $('#resepForm').on('submit', function() {
         formChanged = false;
-    });
-    
-    // Common medications suggestions (optional enhancement)
-    const commonMedications = [
-        'Paracetamol', 'Ibuprofen', 'Amoxicillin', 'Omeprazole', 'Metformin',
-        'Amlodipine', 'Simvastatin', 'Aspirin', 'Captopril', 'Furosemide'
-    ];
-    
-    // Add autocomplete to medication name fields
-    $(document).on('input', 'input[name*="[nama]"]', function() {
-        const input = $(this);
-        const value = input.val().toLowerCase();
-        
-        if (value.length >= 2) {
-            const suggestions = commonMedications.filter(med => 
-                med.toLowerCase().includes(value)
-            );
-            
-            // You can implement dropdown suggestions here if needed
-            // For now, we'll just store the suggestions for future use
-            input.data('suggestions', suggestions);
-        }
     });
 });
 </script>
