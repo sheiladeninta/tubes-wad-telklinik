@@ -152,7 +152,8 @@
                             Informasi Pasien
                         </h5>
                         @if($reservasi)
-                            <!-- Pre-selected patient from reservation -->
+                            <!-- Reservasi dari parameter URL -->
+                            <input type="hidden" name="reservasi_id" value="{{ $reservasi->id }}">
                             <div class="patient-info">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -182,14 +183,8 @@
                                 @endif
                             </div>
                             <input type="hidden" name="pasien_id" value="{{ $reservasi->user_id }}">
-                            @if($reservasi)
-                                <input type="hidden" name="reservasi_id" value="{{ $reservasi->id }}">
-                            @else
-                                <!-- Tambahkan input untuk reservasi_id jika pilih pasien manual -->
-                                <input type="hidden" name="reservasi_id" value="">
-                            @endif
                         @else
-                            <!-- Select patient manually -->
+                            <!-- Pilih pasien manual -->
                             <div class="form-floating mb-3">
                                 <select class="form-select @error('pasien_id') is-invalid @enderror" 
                                         name="pasien_id" id="pasien_id" required>

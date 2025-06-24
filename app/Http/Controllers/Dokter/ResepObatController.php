@@ -89,7 +89,6 @@ class ResepObatController extends Controller
      */
     public function store(Request $request)
     {
-        
         $request->validate([
             'pasien_id' => 'required|exists:users,id',
             'reservasi_id' => 'nullable|exists:reservasis,id',
@@ -115,9 +114,13 @@ class ResepObatController extends Controller
                 ->with('error', 'Pasien tidak ditemukan atau tidak valid.');
         }
 
-        // Validasi reservasi jika ada
-        if ($request->filled('reservasi_id')) {
-            $reservasi = Reservasi::where('id', $request->reservasi_id)
+        // PERBAIKAN: Bersihkan reservasi_id jika kosong
+        $reservasiId = null;
+        if ($request->filled('reservasi_id') && !empty(trim($request->reservasi_id))) {
+            $reservasiId = $request->reservasi_id;
+            
+            // Validasi reservasi jika ada
+            $reservasi = Reservasi::where('id', $reservasiId)
                                 ->where('dokter_id', Auth::id())
                                 ->where('status', Reservasi::STATUS_COMPLETED)
                                 ->first();
@@ -139,7 +142,7 @@ class ResepObatController extends Controller
             $resepObat = ResepObat::create([
                 'pasien_id' => $request->pasien_id,
                 'dokter_id' => Auth::id(),
-                'reservasi_id' => $request->reservasi_id,
+                'reservasi_id' => $reservasiId, // PERBAIKAN: Gunakan variabel yang sudah dibersihkan
                 'nomor_resep' => $nomorResep,
                 'diagnosa' => $request->diagnosa,
                 'catatan_dokter' => $request->catatan_dokter,
@@ -161,7 +164,7 @@ class ResepObatController extends Controller
             }
 
             DB::commit();
-
+            
             return redirect()->route('dokter.resep-obat.show', $resepObat)
                 ->with('success', 'Resep obat berhasil dibuat.');
                 
