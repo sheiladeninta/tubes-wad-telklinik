@@ -1,3 +1,6 @@
+@php
+    use Illuminate\Support\Str;
+@endphp
 {{-- File: resources/views/pasien/reservasi/partials/upcoming-card.blade.php --}}
 <div class="border-bottom" style="border-color: #eee !important;">
     <div class="row g-0 p-4">

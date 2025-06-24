@@ -153,25 +153,6 @@
                     </li>
                 </ul>
             </div>
-
-            <!-- Akun Section -->
-            <div class="nav-section" style="padding: 0 1.5rem; margin-bottom: 1.5rem;">
-                <div class="nav-section-title" style="font-size: 0.8rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Akun</div>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-user-edit" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Edit Profil
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-bell" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Notifikasi
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
 

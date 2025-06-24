@@ -1,3 +1,6 @@
+@php
+    use Illuminate\Support\Str;
+@endphp
 @extends('layouts.pasien')
 @section('title', 'Riwayat Reservasi - Tel-Klinik')
 @section('content')
