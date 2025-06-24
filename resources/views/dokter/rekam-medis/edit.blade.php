@@ -1,5 +1,7 @@
 @extends('layouts.dokter')
-@section('title', 'Buat Rekam Medis')
+
+@section('title', 'Edit Rekam Medis')
+
 @section('content')
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -7,14 +9,22 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h3 class="card-title">Buat Rekam Medis Baru</h3>
-                        <a href="{{ route('dokter.rekam-medis.index') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Kembali
-                        </a>
+                        <h3 class="card-title">Edit Rekam Medis</h3>
+                        <div>
+                            <a href="{{ route('dokter.rekam-medis.show', $rekamMedis) }}" class="btn btn-info me-2">
+                                <i class="fas fa-eye"></i> Lihat Detail
+                            </a>
+                            <a href="{{ route('dokter.rekam-medis.index') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Kembali
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <form action="{{ route('dokter.rekam-medis.store') }}" method="POST" id="rekamMedisForm">
+
+                <form action="{{ route('dokter.rekam-medis.update', $rekamMedis) }}" method="POST" id="rekamMedisForm">
                     @csrf
+                    @method('PUT')
+                    
                     <div class="card-body">
                         @if(session('error'))
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -23,53 +33,31 @@
                             </div>
                         @endif
                         
-                        <!-- Informasi Reservasi (jika ada) -->
-                        @if(isset($reservasi) && $reservasi)
-                            <div class="alert alert-info">
-                                <h5><i class="fas fa-info-circle"></i> Informasi Reservasi</h5>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <strong>Pasien:</strong> {{ $reservasi->user->name }}<br>
-                                        <strong>Email:</strong> {{ $reservasi->user->email }}
-                                    </div>
-                                    <div class="col-md-6">
-                                        <strong>Tanggal:</strong> {{ $reservasi->tanggal_reservasi->format('d/m/Y') }}<br>
-                                        <strong>Waktu:</strong> {{ $reservasi->waktu_reservasi }}
-                                    </div>
+                        <!-- Informasi Pasien dan Reservasi -->
+                        <div class="alert alert-info">
+                            <h5><i class="fas fa-user"></i> Informasi Pasien</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong>Pasien:</strong> {{ $rekamMedis->pasien->name }}<br>
+                                    <strong>Email:</strong> {{ $rekamMedis->pasien->email }}
+                                </div>
+                                <div class="col-md-6">
+                                    @if($rekamMedis->reservasi)
+                                        <strong>Reservasi:</strong> {{ $rekamMedis->reservasi->tanggal_reservasi->format('d/m/Y') }}<br>
+                                        <strong>Waktu:</strong> {{ $rekamMedis->reservasi->waktu_reservasi }}
+                                    @else
+                                        <strong>Status:</strong> Tanpa Reservasi<br>
+                                        <strong>Dibuat:</strong> {{ $rekamMedis->created_at->format('d/m/Y H:i') }}
+                                    @endif
                                 </div>
                             </div>
-                            <input type="hidden" name="user_id" value="{{ $reservasi->user_id }}">
-                            <input type="hidden" name="reservasi_id" value="{{ $reservasi->id }}">
-                        @endif
+                        </div>
                         
                         <div class="row">
                             <!-- Informasi Dasar -->
                             <div class="col-12">
                                 <h5 class="mb-3">Informasi Dasar</h5>
                             </div>
-                            
-                            @if(!isset($reservasi) || !$reservasi)
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="user_id" class="form-label">Pasien <span class="text-danger">*</span></label>
-                                    <select class="form-select @error('user_id') is-invalid @enderror" 
-                                            id="user_id" 
-                                            name="user_id" 
-                                            required>
-                                        <option value="">Pilih Pasien</option>
-                                        @foreach($pasiens as $pasien)
-                                            <option value="{{ $pasien->id }}" 
-                                                    {{ old('user_id') == $pasien->id ? 'selected' : '' }}>
-                                                {{ $pasien->name }} - {{ $pasien->email }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('user_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            @endif
                             
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -78,11 +66,32 @@
                                            class="form-control @error('tanggal_pemeriksaan') is-invalid @enderror" 
                                            id="tanggal_pemeriksaan" 
                                            name="tanggal_pemeriksaan" 
-                                           value="{{ old('tanggal_pemeriksaan', isset($reservasi) && $reservasi ? $reservasi->tanggal_reservasi->format('Y-m-d\TH:i') : now()->format('Y-m-d\TH:i')) }}" 
+                                           value="{{ old('tanggal_pemeriksaan', $rekamMedis->tanggal_pemeriksaan->format('Y-m-d\TH:i')) }}" 
                                            required>
                                     @error('tanggal_pemeriksaan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                                    <select class="form-select @error('status') is-invalid @enderror" 
+                                            id="status" 
+                                            name="status" 
+                                            required>
+                                        <option value="draft" {{ old('status', $rekamMedis->status) == 'draft' ? 'selected' : '' }}>
+                                            Draft
+                                        </option>
+                                        <option value="final" {{ old('status', $rekamMedis->status) == 'final' ? 'selected' : '' }}>
+                                            Final
+                                        </option>
+                                    </select>
+                                    @error('status')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <div class="form-text">Status final akan membuat rekam medis dapat dilihat oleh pasien</div>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +110,7 @@
                                            class="form-control @error('tinggi_badan') is-invalid @enderror" 
                                            id="tinggi_badan" 
                                            name="tinggi_badan" 
-                                           value="{{ old('tinggi_badan') }}" 
+                                           value="{{ old('tinggi_badan', $rekamMedis->tinggi_badan) }}" 
                                            step="0.1" 
                                            min="50" 
                                            max="250"
@@ -118,7 +127,7 @@
                                            class="form-control @error('berat_badan') is-invalid @enderror" 
                                            id="berat_badan" 
                                            name="berat_badan" 
-                                           value="{{ old('berat_badan') }}" 
+                                           value="{{ old('berat_badan', $rekamMedis->berat_badan) }}" 
                                            step="0.1" 
                                            min="10" 
                                            max="300"
@@ -135,7 +144,7 @@
                                            class="form-control @error('tekanan_darah') is-invalid @enderror" 
                                            id="tekanan_darah" 
                                            name="tekanan_darah" 
-                                           value="{{ old('tekanan_darah') }}" 
+                                           value="{{ old('tekanan_darah', $rekamMedis->tekanan_darah) }}" 
                                            placeholder="120/80"
                                            pattern="^\d{2,3}\/\d{2,3}$">
                                     @error('tekanan_darah')
@@ -151,7 +160,7 @@
                                            class="form-control @error('suhu_tubuh') is-invalid @enderror" 
                                            id="suhu_tubuh" 
                                            name="suhu_tubuh" 
-                                           value="{{ old('suhu_tubuh') }}" 
+                                           value="{{ old('suhu_tubuh', $rekamMedis->suhu_tubuh) }}" 
                                            step="0.1" 
                                            min="30" 
                                            max="45"
@@ -168,7 +177,7 @@
                                            class="form-control @error('nadi') is-invalid @enderror" 
                                            id="nadi" 
                                            name="nadi" 
-                                           value="{{ old('nadi') }}" 
+                                           value="{{ old('nadi', $rekamMedis->nadi) }}" 
                                            min="40" 
                                            max="200"
                                            placeholder="80">
@@ -207,7 +216,7 @@
                                               name="keluhan" 
                                               rows="3" 
                                               placeholder="Jelaskan keluhan utama pasien..."
-                                              required>{{ old('keluhan') }}</textarea>
+                                              required>{{ old('keluhan', $rekamMedis->keluhan) }}</textarea>
                                     @error('keluhan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -230,7 +239,7 @@
                                               name="diagnosa" 
                                               rows="4" 
                                               placeholder="Masukkan diagnosa medis..."
-                                              required>{{ old('diagnosa') }}</textarea>
+                                              required>{{ old('diagnosa', $rekamMedis->diagnosa) }}</textarea>
                                     @error('diagnosa')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -244,7 +253,7 @@
                                               name="tindakan" 
                                               rows="4" 
                                               placeholder="Masukkan tindakan yang dilakukan..."
-                                              required>{{ old('tindakan') }}</textarea>
+                                              required>{{ old('tindakan', $rekamMedis->tindakan) }}</textarea>
                                     @error('tindakan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -266,7 +275,7 @@
                                               id="resep_obat" 
                                               name="resep_obat" 
                                               rows="4" 
-                                              placeholder="Masukkan resep obat (opsional)...">{{ old('resep_obat') }}</textarea>
+                                              placeholder="Masukkan resep obat (opsional)...">{{ old('resep_obat', $rekamMedis->resep_obat) }}</textarea>
                                     @error('resep_obat')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -280,10 +289,34 @@
                                               id="catatan_dokter" 
                                               name="catatan_dokter" 
                                               rows="4" 
-                                              placeholder="Catatan tambahan dari dokter (opsional)...">{{ old('catatan_dokter') }}</textarea>
+                                              placeholder="Catatan tambahan dari dokter (opsional)...">{{ old('catatan_dokter', $rekamMedis->catatan_dokter) }}</textarea>
                                     @error('catatan_dokter')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Informasi Tambahan -->
+                        <hr>
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="mb-3">Informasi Terakhir Diperbarui</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Dibuat Pada</label>
+                                    <input type="text" class="form-control" 
+                                           value="{{ $rekamMedis->created_at->format('d/m/Y H:i:s') }}" 
+                                           readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Terakhir Diperbarui</label>
+                                    <input type="text" class="form-control" 
+                                           value="{{ $rekamMedis->updated_at->format('d/m/Y H:i:s') }}" 
+                                           readonly>
                                 </div>
                             </div>
                         </div>
@@ -291,15 +324,14 @@
                     
                     <div class="card-footer">
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('dokter.rekam-medis.index') }}" class="btn btn-secondary">
-                                <i class="fas fa-times"></i> Batal
-                            </a>
                             <div>
-                                <button type="submit" name="status" value="draft" class="btn btn-warning me-2">
-                                    <i class="fas fa-save"></i> Simpan sebagai Draft
-                                </button>
-                                <button type="submit" name="status" value="final" class="btn btn-primary">
-                                    <i class="fas fa-check-circle"></i> Simpan dan Selesaikan
+                                <a href="{{ route('dokter.rekam-medis.show', $rekamMedis) }}" class="btn btn-secondary">
+                                    <i class="fas fa-times"></i> Batal
+                                </a>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Simpan Perubahan
                                 </button>
                             </div>
                         </div>
@@ -319,7 +351,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p id="confirmMessage">Apakah Anda yakin ingin menyimpan rekam medis ini?</p>
+                <p id="confirmMessage">Apakah Anda yakin ingin menyimpan perubahan rekam medis ini?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -397,19 +429,20 @@
     .kategori-bmi-normal { color: #28a745 !important; }
     .kategori-bmi-gemuk { color: #ffc107 !important; }
     .kategori-bmi-obesitas { color: #dc3545 !important; }
+
+    input[readonly] {
+        background-color: #f8f9fa;
+        opacity: 1;
+    }
 </style>
 @endpush
 
 @push('scripts')
 <script>
 $(document).ready(function() {
-    // Tentukan apakah ada reservasi
-    @if(isset($reservasi) && $reservasi)
-        const hasReservasi = true;
-    @else
-        const hasReservasi = false;
-    @endif
-
+    // Status asli rekam medis
+    const originalStatus = '{{ $rekamMedis->status }}';
+    
     // Fungsi untuk menghitung BMI
     function calculateBMI() {
         const tinggi = parseFloat($('#tinggi_badan').val());
@@ -451,7 +484,7 @@ $(document).ready(function() {
     // Event listener untuk perubahan tinggi dan berat badan
     $('#tinggi_badan, #berat_badan').on('input', calculateBMI);
     
-    // Hitung BMI saat halaman dimuat jika ada nilai
+    // Hitung BMI saat halaman dimuat
     calculateBMI();
     
     // Format input tekanan darah
@@ -490,13 +523,9 @@ $(document).ready(function() {
             { field: 'tanggal_pemeriksaan', name: 'Tanggal Pemeriksaan' },
             { field: 'keluhan', name: 'Keluhan Utama' },
             { field: 'diagnosa', name: 'Diagnosa' },
-            { field: 'tindakan', name: 'Tindakan' }
+            { field: 'tindakan', name: 'Tindakan' },
+            { field: 'status', name: 'Status' }
         ];
-        
-        // Tambah validasi user_id hanya jika tidak ada reservasi
-        if (!hasReservasi) {
-            requiredFields.unshift({ field: 'user_id', name: 'Pasien' });
-        }
         
         requiredFields.forEach(function(item) {
             const element = $(`[name="${item.field}"]`);
@@ -551,21 +580,24 @@ $(document).ready(function() {
             return false;
         }
         
-        // Tampilkan konfirmasi untuk status final
-        const clickedButton = $(document.activeElement);
-        if (clickedButton.attr('name') === 'status' && clickedButton.val() === 'final') {
+        // Tampilkan konfirmasi jika status berubah dari draft ke final
+        const currentStatus = $('#status').val();
+        if (originalStatus === 'draft' && currentStatus === 'final') {
             e.preventDefault();
-            $('#confirmMessage').text('Apakah Anda yakin ingin menyelesaikan rekam medis ini? Setelah diselesaikan, rekam medis akan dapat dilihat oleh pasien dan status reservasi akan diubah menjadi final.');
+            $('#confirmMessage').text('Apakah Anda yakin ingin mengubah status rekam medis menjadi final? Setelah final, rekam medis akan dapat dilihat oleh pasien.');
             $('#confirmModal').modal('show');
             
             $('#confirmSubmit').off('click').on('click', function() {
-                // Set hidden input untuk status
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: 'status',
-                    value: 'final'
-                }).appendTo('#rekamMedisForm');
-                
+                $('#confirmModal').modal('hide');
+                $('#rekamMedisForm')[0].submit();
+            });
+        } else {
+            // Konfirmasi biasa untuk perubahan lainnya
+            e.preventDefault();
+            $('#confirmMessage').text('Apakah Anda yakin ingin menyimpan perubahan rekam medis ini?');
+            $('#confirmModal').modal('show');
+            
+            $('#confirmSubmit').off('click').on('click', function() {
                 $('#confirmModal').modal('hide');
                 $('#rekamMedisForm')[0].submit();
             });
@@ -590,6 +622,26 @@ $(document).ready(function() {
     
     // Tooltip initialization
     $('[data-bs-toggle="tooltip"]').tooltip();
+    
+    // Highlight perubahan form
+    let formChanged = false;
+    $('.form-control, .form-select, textarea').on('input change', function() {
+        formChanged = true;
+    });
+    
+    // Warning jika user mencoba keluar tanpa menyimpan
+    $(window).on('beforeunload', function(e) {
+        if (formChanged) {
+            const message = 'Anda memiliki perubahan yang belum disimpan. Apakah Anda yakin ingin keluar?';
+            e.returnValue = message;
+            return message;
+        }
+    });
+    
+    // Remove warning saat form disubmit
+    $('#rekamMedisForm').on('submit', function() {
+        $(window).off('beforeunload');
+    });
 });
 </script>
 @endpush

@@ -76,6 +76,11 @@ class Reservasi extends Model
         return $this->belongsTo(User::class, 'dokter_id');
     }
 
+        public function rekamMedis(): HasOne
+    {
+        return $this->hasOne(RekamMedis::class);
+    }
+
     // Scopes
     public function scopeByUser($query, $userId)
     {
@@ -91,5 +96,10 @@ class Reservasi extends Model
     {
         return $query->where('tanggal_reservasi', '>=', now()->toDateString())
                     ->where('status', '!=', self::STATUS_CANCELLED);
+    }
+
+    public function scopeConfirmed($query)
+    {
+        return $query->where('status', self::STATUS_CONFIRMED);
     }
 }

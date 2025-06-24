@@ -116,21 +116,15 @@
                 <div class="nav-section-title" style="font-size: 0.8rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Rekam Medis</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545'; this.querySelector('i').style.color='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; this.querySelector('i').style.color='#6c757d';">
+                        <a class="nav-link {{ request()->routeIs('dokter.rekam-medis.create') ? 'active' : '' }}" href="{{ route('dokter.rekam-medis.create') }}" style="color: {{ request()->routeIs('dokter.rekam-medis.create') ? '#dc3545' : '#2c3e50' }}; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid {{ request()->routeIs('dokter.rekam-medis.create') ? '#dc3545' : 'transparent' }}; display: flex; align-items: center; text-decoration: none; background-color: {{ request()->routeIs('dokter.rekam-medis.create') ? '#f8d7da' : 'transparent' }}; font-weight: {{ request()->routeIs('dokter.rekam-medis.create') ? '600' : 'normal' }};" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="if (!this.classList.contains('active')) { this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; }">
                             <i class="fas fa-file-medical-alt" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Buat Rekam Medis
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545'; this.querySelector('i').style.color='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; this.querySelector('i').style.color='#6c757d';">
+                        <a class="nav-link {{ request()->routeIs('dokter.rekam-medis.index') ? 'active' : '' }}" href="{{ route('dokter.rekam-medis.index') }}" style="color: {{ request()->routeIs('dokter.rekam-medis.index') ? '#dc3545' : '#2c3e50' }}; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid {{ request()->routeIs('dokter.rekam-medis.index') ? '#dc3545' : 'transparent' }}; display: flex; align-items: center; text-decoration: none; background-color: {{ request()->routeIs('dokter.rekam-medis.index') ? '#f8d7da' : 'transparent' }}; font-weight: {{ request()->routeIs('dokter.rekam-medis.index') ? '600' : 'normal' }};" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="if (!this.classList.contains('active')) { this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; }">
                             <i class="fas fa-search" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Cari Rekam Medis
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545'; this.querySelector('i').style.color='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; this.querySelector('i').style.color='#6c757d';">
-                            <i class="fas fa-history" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Riwayat Pemeriksaan
                         </a>
                     </li>
                 </ul>

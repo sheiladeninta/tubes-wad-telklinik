@@ -58,6 +58,17 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')->g
         Route::post('/{consultation}/complete', [App\Http\Controllers\Dokter\ConsultationController::class, 'completeConsultation'])->name('complete');
         Route::get('/{consultation}/messages', [App\Http\Controllers\Dokter\ConsultationController::class, 'getMessages'])->name('messages');
     });
+
+    // Routes untuk manajemen rekam medis dokter
+    Route::prefix('rekam-medis')->name('rekam-medis.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Dokter\RekamMedisController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\Dokter\RekamMedisController::class, 'create'])->name('create');
+        Route::post('/', [App\Http\Controllers\Dokter\RekamMedisController::class, 'store'])->name('store');
+        Route::get('/{rekamMedis}', [App\Http\Controllers\Dokter\RekamMedisController::class, 'show'])->name('show');
+        Route::get('/{rekamMedis}/edit', [App\Http\Controllers\Dokter\RekamMedisController::class, 'edit'])->name('edit');
+        Route::put('/{rekamMedis}', [App\Http\Controllers\Dokter\RekamMedisController::class, 'update'])->name('update');
+        Route::get('/statistics/data', [App\Http\Controllers\Dokter\RekamMedisController::class, 'getStatistics'])->name('statistics');
+    });
 });
 
 // Pasien Routes

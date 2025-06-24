@@ -88,12 +88,6 @@
                             Dashboard Utama
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-chart-bar" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Statistik & Laporan
-                        </a>
-                    </li>
                 </ul>
             </div>
 
@@ -105,30 +99,6 @@
                         <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
                             <i class="fas fa-pills" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Kelola Stok Obat
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-warehouse" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Inventaris Farmasi
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-truck" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Pemasukan Obat
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-minus-circle" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Pengeluaran Obat
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-chart-pie" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Laporan Obat
                         </a>
                     </li>
                 </ul>
@@ -152,45 +122,8 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-clock" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Ketersediaan Layanan
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
                             <i class="fas fa-users" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Daftar Pasien Dokter
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Notifikasi Section -->
-            <div class="nav-section" style="padding: 0 1.5rem; margin-bottom: 1.5rem;">
-                <div class="nav-section-title" style="font-size: 0.8rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Notifikasi</div>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-bell" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Kelola Notifikasi
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-envelope" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Notifikasi Email
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-mobile-alt" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Notifikasi In-App
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-bullhorn" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Pengumuman
                         </a>
                     </li>
                 </ul>
@@ -210,12 +143,6 @@
                         <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
                             <i class="fas fa-calendar-check" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Reservasi Pasien
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent';">
-                            <i class="fas fa-file-medical" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
-                            Rekam Medis
                         </a>
                     </li>
                 </ul>

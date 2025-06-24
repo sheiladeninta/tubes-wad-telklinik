@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -40,6 +41,30 @@ class User extends Authenticatable
         'birth_date' => 'date',
         'is_active' => 'boolean',
     ];
+
+    // Relasi untuk reservasi sebagai pasien
+    public function reservasi(): HasMany
+    {
+        return $this->hasMany(Reservasi::class, 'user_id');
+    }
+
+    // Relasi untuk reservasi sebagai dokter
+    public function reservasiDokter(): HasMany
+    {
+        return $this->hasMany(Reservasi::class, 'dokter_id');
+    }
+
+    // Relasi untuk rekam medis sebagai pasien
+    public function rekamMedis(): HasMany
+    {
+        return $this->hasMany(RekamMedis::class, 'user_id');
+    }
+
+    // Relasi untuk rekam medis sebagai dokter
+    public function rekamMedisDokter(): HasMany
+    {
+        return $this->hasMany(RekamMedis::class, 'dokter_id');
+    }
 
     // Scope untuk role
     public function scopePasien($query)
