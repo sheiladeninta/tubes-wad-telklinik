@@ -1,0 +1,248 @@
+@extends('layouts.dokter')
+
+@section('title', 'Detail Resep Obat')
+
+@section('content')
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">Detail Resep Obat</h3>
+                    <div>
+                        <a href="{{ route('dokter.resep-obat.index') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Kembali
+                        </a>
+                        @if($resepObat->status == 'pending')
+                            <a href="{{ route('dokter.resep-obat.edit', $resepObat) }}" class="btn btn-warning">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                        @endif
+                        <button onclick="window.print()" class="btn btn-info">
+                            <i class="fas fa-print"></i> Cetak
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Informasi Resep -->
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Informasi Resep</h5>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-borderless">
+                                        <tr>
+                                            <td><strong>Nomor Resep:</strong></td>
+                                            <td>{{ $resepObat->nomor_resep }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Tanggal Resep:</strong></td>
+                                            <td>{{ $resepObat->tanggal_resep->format('d/m/Y H:i') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Status:</strong></td>
+                                            <td>
+                                                @switch($resepObat->status)
+                                                    @case('pending')
+                                                        <span class="badge badge-warning badge-lg">Pending</span>
+                                                        @break
+                                                    @case('diproses')
+                                                        <span class="badge badge-info badge-lg">Diproses</span>
+                                                        @break
+                                                    @case('siap')
+                                                        <span class="badge badge-success badge-lg">Siap</span>
+                                                        @break
+                                                    @case('diambil')
+                                                        <span class="badge badge-secondary badge-lg">Diambil</span>
+                                                        @break
+                                                @endswitch
+                                            </td>
+                                        </tr>
+                                        @if($resepObat->reservasi)
+                                        <tr>
+                                            <td><strong>Reservasi:</strong></td>
+                                            <td>{{ $resepObat->reservasi->nomor_reservasi }}</td>
+                                        </tr>
+                                        @endif
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Informasi Pasien -->
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Informasi Pasien</h5>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-borderless">
+                                        <tr>
+                                            <td><strong>Nama:</strong></td>
+                                            <td>{{ $resepObat->pasien->name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Email:</strong></td>
+                                            <td>{{ $resepObat->pasien->email }}</td>
+                                        </tr>
+                                        @if($resepObat->pasien->phone)
+                                        <tr>
+                                            <td><strong>Telepon:</strong></td>
+                                            <td>{{ $resepObat->pasien->phone }}</td>
+                                        </tr>
+                                        @endif
+                                        @if($resepObat->pasien->date_of_birth)
+                                        <tr>
+                                            <td><strong>Tanggal Lahir:</strong></td>
+                                            <td>{{ $resepObat->pasien->date_of_birth->format('d/m/Y') }}</td>
+                                        </tr>
+                                        @endif
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Diagnosa -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Diagnosa</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>{{ $resepObat->diagnosa }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if($resepObat->catatan_dokter)
+                    <!-- Catatan Dokter -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Catatan Dokter</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>{{ $resepObat->catatan_dokter }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
+                    <!-- Daftar Obat -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Daftar Obat</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-light">
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Nama Obat</th>
+                                                    <th>Dosis</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Satuan</th>
+                                                    <th>Aturan Pakai</th>
+                                                    <th>Keterangan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($resepObat->detailResep as $index => $detail)
+                                                <tr>
+                                                    <td>{{ $index + 1 }}</td>
+                                                    <td><strong>{{ $detail->nama_obat }}</strong></td>
+                                                    <td>{{ $detail->dosis }}</td>
+                                                    <td>{{ $detail->jumlah }}</td>
+                                                    <td>{{ $detail->satuan }}</td>
+                                                    <td>{{ $detail->aturan_pakai }}</td>
+                                                    <td>{{ $detail->keterangan ?? '-' }}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if($resepObat->farmasi)
+                    <!-- Informasi Farmasi -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Informasi Farmasi</h5>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-borderless">
+                                        <tr>
+                                            <td><strong>Petugas Farmasi:</strong></td>
+                                            <td>{{ $resepObat->farmasi->name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Tanggal Diproses:</strong></td>
+                                            <td>{{ $resepObat->tanggal_diproses ? $resepObat->tanggal_diproses->format('d/m/Y H:i') : '-' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Tanggal Siap:</strong></td>
+                                            <td>{{ $resepObat->tanggal_siap ? $resepObat->tanggal_siap->format('d/m/Y H:i') : '-' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Tanggal Diambil:</strong></td>
+                                            <td>{{ $resepObat->tanggal_diambil ? $resepObat->tanggal_diambil->format('d/m/Y H:i') : '-' }}</td>
+                                        </tr>
+                                        @if($resepObat->catatan_farmasi)
+                                        <tr>
+                                            <td><strong>Catatan Farmasi:</strong></td>
+                                            <td>{{ $resepObat->catatan_farmasi }}</td>
+                                        </tr>
+                                        @endif
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('styles')
+<style>
+    @media print {
+        .card-header,
+        .btn,
+        .no-print {
+            display: none !important;
+        }
+        
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
+        
+        .table {
+            font-size: 12px;
+        }
+        
+        .badge-lg {
+            font-size: 14px;
+            padding: 8px 12px;
+        }
+    }
+</style>
+@endpush
+@endsection

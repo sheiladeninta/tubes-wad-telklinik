@@ -81,6 +81,11 @@ class Reservasi extends Model
         return $this->hasOne(RekamMedis::class);
     }
 
+    public function resepObat(): HasOne
+    {
+        return $this->hasOne(ResepObat::class);
+    }
+
     // Scopes
     public function scopeByUser($query, $userId)
     {

@@ -66,6 +66,18 @@ class User extends Authenticatable
         return $this->hasMany(RekamMedis::class, 'dokter_id');
     }
 
+    // Relasi untuk resep obat sebagai pasien
+    public function resepObat(): HasMany
+    {
+        return $this->hasMany(ResepObat::class, 'user_id');
+    }
+
+    // Relasi untuk resep obat sebagai dokter
+    public function resepObatDokter(): HasMany
+    {
+        return $this->hasMany(ResepObat::class, 'dokter_id');
+    }
+
     // Scope untuk role
     public function scopePasien($query)
     {

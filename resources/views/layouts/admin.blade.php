@@ -11,6 +11,7 @@
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -84,7 +85,7 @@
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none; {{ request()->routeIs('admin.dashboard') ? 'background-color: #f8d7da; color: #dc3545; border-left-color: #dc3545; font-weight: 600;' : '' }}">
-                            <i class="fas fa-tachometer-alt" style="width: 20px; margin-right: 10px; color: #dc3545;"></i>
+                            <i class="fas fa-tachometer-alt" style="width: 20px; margin-right: 10px; color: {{ request()->routeIs('dokter.dashboard') ? '#dc3545' : '#6c757d' }};"></i>
                             Dashboard Utama
                         </a>
                     </li>

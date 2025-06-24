@@ -11,6 +11,7 @@
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -135,7 +136,7 @@
                 <div class="nav-section-title" style="font-size: 0.8rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Farmasi</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #2c3e50; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; text-decoration: none;" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545'; this.querySelector('i').style.color='#dc3545';" onmouseout="this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; this.querySelector('i').style.color='#6c757d';">
+                        <a class="nav-link {{ request()->routeIs('dokter.resep-obat.create') ? 'active' : '' }}" href="{{ route('dokter.resep-obat.create') }}" style="color: {{ request()->routeIs('dokter.resep-obat.create') ? '#dc3545' : '#2c3e50' }}; padding: 0.75rem 1.5rem; margin: 0.2rem 0; border-radius: 0; transition: all 0.3s ease; border-left: 3px solid {{ request()->routeIs('dokter.resep-obat.create') ? '#dc3545' : 'transparent' }}; display: flex; align-items: center; text-decoration: none; background-color: {{ request()->routeIs('dokter.resep-obat.create') ? '#f8d7da' : 'transparent' }}; font-weight: {{ request()->routeIs('dokter.resep-obat.create') ? '600' : 'normal' }};" onmouseover="this.style.backgroundColor='#f8d7da'; this.style.color='#dc3545'; this.style.borderLeftColor='#dc3545';" onmouseout="if (!this.classList.contains('active')) { this.style.backgroundColor=''; this.style.color='#2c3e50'; this.style.borderLeftColor='transparent'; }">
                             <i class="fas fa-prescription" style="width: 20px; margin-right: 10px; color: #6c757d;"></i>
                             Buat Resep
                         </a>
