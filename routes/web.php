@@ -86,6 +86,13 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')->g
         Route::put('/{resepObat}', [App\Http\Controllers\Dokter\ResepObatController::class, 'update'])->name('update');
         Route::delete('/{resepObat}', [App\Http\Controllers\Dokter\ResepObatController::class, 'destroy'])->name('destroy');
     });
+
+    // Routes untuk manajemen obat oleh dokter (READ ONLY)
+    Route::prefix('obat')->name('obat.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Dokter\ObatController::class, 'index'])->name('index');
+        Route::get('/{obat}', [App\Http\Controllers\Dokter\ObatController::class, 'show'])->name('show');
+        Route::get('/{obat}/info', [App\Http\Controllers\Dokter\ObatController::class, 'getInfo'])->name('info');
+    });
 });
 
 // Pasien Routes
