@@ -181,12 +181,11 @@
 <body>
     <!-- Header Klinik/RS -->
     <div class="header">
-        <h1>Klinik Praktik Dokter</h1>
+        <h1>Tel-Klinik Praktik Dokter</h1>
         <h2>{{ $dokter->name ?? 'Dr. [Nama Dokter]' }}</h2>
         <div class="clinic-info">
-            <strong>Alamat:</strong> [Alamat Klinik/Praktik]<br>
-            <strong>Telepon:</strong> [Nomor Telepon] | <strong>Email:</strong> [Email Klinik]<br>
-            <strong>SIP:</strong> [Nomor SIP Dokter]
+            <strong>Alamat:</strong> Jalan Telekomunikasi, Bojongsoang<br>
+            <strong>Telepon:</strong> 000777 | <strong>Email:</strong> admin@tel-klinik.com<br>
         </div>
     </div>
 
@@ -211,22 +210,22 @@
                     <td>:</td>
                     <td><strong>{{ $pasien->name }}</strong></td>
                 </tr>
-                @if($pasien->date_of_birth)
+                @if($pasien->birth_date)
                 <tr>
                     <td>Tanggal Lahir</td>
                     <td>:</td>
-                    <td>{{ \Carbon\Carbon::parse($pasien->date_of_birth)->format('d F Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($pasien->birth_date)->format('d F Y') }}</td>
                 </tr>
                 <tr>
                     <td>Umur</td>
                     <td>:</td>
-                    <td>{{ \Carbon\Carbon::parse($pasien->date_of_birth)->age }} tahun</td>
+                    <td>{{ \Carbon\Carbon::parse($pasien->birth_date)->age }} tahun</td>
                 </tr>
                 @endif
                 <tr>
                     <td>Jenis Kelamin</td>
                     <td>:</td>
-                    <td>{{ $pasien->gender ?? '-' }}</td>
+                    <td>{{ $pasien->gender }}</td>
                 </tr>
                 @if($pasien->address)
                 <tr>
@@ -238,7 +237,7 @@
                 <tr>
                     <td>Pekerjaan</td>
                     <td>:</td>
-                    <td>{{ $pasien->occupation ?? '-' }}</td>
+                    <td>{{ $pasien->user_type }}</td>
                 </tr>
             </table>
         </div>

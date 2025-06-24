@@ -248,15 +248,15 @@
         </div>
         <div class="info-row">
             <div class="info-label">No. Telepon</div>
-            <div class="info-value">: {{ $rekamMedis->pasien->phone ?? '-' }}</div>
+            <div class="info-value">: {{ $rekamMedis->pasien->phone }}</div>
         </div>
         <div class="info-row">
             <div class="info-label">Tanggal Lahir</div>
-            <div class="info-value">: {{ $rekamMedis->pasien->tanggal_lahir ? \Carbon\Carbon::parse($rekamMedis->pasien->tanggal_lahir)->format('d F Y') : '-' }}</div>
+            <div class="info-value">: {{ $rekamMedis->pasien->birth_date }}</div>
         </div>
         <div class="info-row">
             <div class="info-label">Jenis Kelamin</div>
-            <div class="info-value">: {{ $rekamMedis->pasien->jenis_kelamin ?? '-' }}</div>
+            <div class="info-value">: {{ $rekamMedis->pasien->gender }}</div>
         </div>
     </div>
 

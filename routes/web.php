@@ -124,7 +124,9 @@ Route::middleware(['auth', 'role:pasien'])->prefix('pasien')->name('pasien.')->g
     Route::get('/resep-obat/siap-diambil', [ResepObatController::class, 'siapDiambil'])->name('resep-obat.siap-diambil');
     Route::get('/resep-obat/riwayat', [ResepObatController::class, 'riwayat'])->name('resep-obat.riwayat');
     Route::get('/resep-obat/{resepObat}', [ResepObatController::class, 'show'])->name('resep-obat.show');
-    Route::get('/resep-obat/{resepObat}/print', [ResepObatController::class, 'print'])->name('resep-obat.print');
+    Route::get('/resep-obat/{resepObat}/preview', [ResepObatController::class, 'preview'])->name('resep-obat.preview');
+    Route::get('/resep-obat/{resepObat}/download', [ResepObatController::class, 'download'])->name('resep-obat.download');
+    Route::post('/resep-obat/{resepObat}/konfirmasi-ambil', [ResepObatController::class, 'konfirmasiAmbil'])->name('resep-obat.konfirmasi-ambil');
 
     // Surat Keterangan Routes
     Route::prefix('surat-keterangan')->name('surat-keterangan.')->group(function () {

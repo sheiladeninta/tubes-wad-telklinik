@@ -7,6 +7,7 @@ use App\Models\ResepObat;
 use App\Models\DetailResepObat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf; // Import DomPDF
 
 class ResepObatController extends Controller
 {
@@ -96,9 +97,37 @@ class ResepObatController extends Controller
 
         $resepObat->load(['dokter', 'detailResep', 'pasien']);
 
-        // Generate PDF (you'll need to implement PDF generation)
-        // For now, return a view that can be printed
-        return view('pasien.resep-obat.print', compact('resepObat'));
+        // Generate PDF
+        $pdf = Pdf::loadView('pasien.resep-obat.pdf', compact('resepObat'));
+        
+        // Set paper size and orientation
+        $pdf->setPaper('A4', 'portrait');
+        
+        // Generate filename
+        $filename = 'Resep-Obat-' . $resepObat->nomor_resep . '-' . date('Y-m-d') . '.pdf';
+        
+        // Download PDF directly
+        return $pdf->download($filename);
+    }
+
+    /**
+     * Stream PDF (untuk preview di browser)
+     */
+    public function preview(ResepObat $resepObat)
+    {
+        // Ensure the prescription belongs to the authenticated patient
+        if ($resepObat->pasien_id !== Auth::id()) {
+            abort(403, 'Anda tidak memiliki akses ke resep ini.');
+        }
+
+        $resepObat->load(['dokter', 'detailResep', 'pasien']);
+
+        // Generate PDF
+        $pdf = Pdf::loadView('pasien.resep-obat.pdf', compact('resepObat'));
+        $pdf->setPaper('A4', 'portrait');
+        
+        // Stream PDF (tampil di browser)
+        return $pdf->stream('Resep-Obat-' . $resepObat->nomor_resep . '.pdf');
     }
 
     /**
