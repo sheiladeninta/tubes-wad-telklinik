@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\RekamMedis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use PDF;
 
 class RekamMedisController extends Controller
 {

@@ -93,6 +93,15 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')->g
         Route::get('/{obat}', [App\Http\Controllers\Dokter\ObatController::class, 'show'])->name('show');
         Route::get('/{obat}/info', [App\Http\Controllers\Dokter\ObatController::class, 'getInfo'])->name('info');
     });
+
+    // Routes untuk manajemen surat keterangan oleh dokter
+    Route::prefix('surat-keterangan')->name('surat-keterangan.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Dokter\SuratKeteranganController::class, 'index'])->name('index');
+        Route::get('/{suratKeterangan}', [App\Http\Controllers\Dokter\SuratKeteranganController::class, 'show'])->name('show');
+        Route::post('/{suratKeterangan}/approve', [App\Http\Controllers\Dokter\SuratKeteranganController::class, 'approve'])->name('approve');
+        Route::post('/{suratKeterangan}/reject', [App\Http\Controllers\Dokter\SuratKeteranganController::class, 'reject'])->name('reject');
+        Route::get('/{suratKeterangan}/download', [App\Http\Controllers\Dokter\SuratKeteranganController::class, 'download'])->name('download');
+    });
 });
 
 // Pasien Routes
@@ -107,6 +116,8 @@ Route::middleware(['auth', 'role:pasien'])->prefix('pasien')->name('pasien.')->g
     // Rekam Medis Routes
     Route::get('/rekam-medis', [RekamMedisController::class, 'index'])->name('rekam-medis.index');
     Route::get('/rekam-medis/{rekamMedis}', [RekamMedisController::class, 'show'])->name('rekam-medis.show');
+    Route::get('/rekam-medis/{rekamMedis}/download', [RekamMedisController::class, 'download'])->name('rekam-medis.download');
+    Route::get('/rekam-medis/statistics/data', [RekamMedisController::class, 'getStatistics'])->name('rekam-medis.statistics');
     
     // Resep Obat Routes
     Route::get('/resep-obat', [ResepObatController::class, 'index'])->name('resep-obat.index');
