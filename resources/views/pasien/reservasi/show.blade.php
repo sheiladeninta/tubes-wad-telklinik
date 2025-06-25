@@ -1,258 +1,256 @@
 @php
     use Illuminate\Support\Str;
+    use Carbon\Carbon;
 @endphp
 @extends('layouts.pasien')
-
 @section('title', 'Detail Reservasi - Tel-Klinik')
-
 @section('content')
-<div class="container-fluid">
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 mb-0" style="color: #2c3e50; font-weight: 600;">
-                <i class="fas fa-eye me-2" style="color: #dc3545;"></i>
-                Detail Reservasi
-            </h1>
-            <p class="text-muted mb-0">Informasi lengkap reservasi Anda</p>
-        </div>
-        <div>
-            <a href="{{ route('pasien.reservasi.index') }}" class="btn btn-outline-secondary" style="border-radius: 8px; padding: 12px 24px;">
-                <i class="fas fa-arrow-left me-2"></i>Kembali ke Riwayat
-            </a>
-        </div>
-    </div>
-
-    <!-- Alert Messages -->
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" style="border-radius: 8px; border: none; background: #d1edff;">
-            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" style="border-radius: 8px; border: none;">
-            <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-
-    <div class="row">
-        <!-- Main Info Card -->
-        <div class="col-lg-8">
-            <div class="card mb-4" style="border: none; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                <div class="card-header" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 12px 12px 0 0;">
-                    <h5 class="mb-0">
-                        <i class="fas fa-info-circle me-2"></i>Informasi Reservasi
-                    </h5>
-                </div>
-                <div class="card-body" style="padding: 30px;">
-                    <!-- Status Badge -->
-                    <div class="mb-4">
-                        @php
-                            $statusConfig = [
-                                'pending' => ['class' => 'warning', 'icon' => 'clock', 'text' => 'Menunggu Konfirmasi', 'bg' => '#fff3cd'],
-                                'confirmed' => ['class' => 'success', 'icon' => 'check-circle', 'text' => 'Terkonfirmasi', 'bg' => '#d1edff'],
-                                'completed' => ['class' => 'primary', 'icon' => 'user-md', 'text' => 'Selesai', 'bg' => '#e7f3ff'],
-                                'cancelled' => ['class' => 'danger', 'icon' => 'times-circle', 'text' => 'Dibatalkan', 'bg' => '#f8d7da'],
-                            ];
-                            $config = $statusConfig[$reservasi->status] ?? ['class' => 'secondary', 'icon' => 'question', 'text' => 'Unknown', 'bg' => '#f8f9fa'];
-                        @endphp
-                        <div class="alert" style="background: {{ $config['bg'] }}; border: none; border-radius: 8px; padding: 15px;">
-                            <span class="badge bg-{{ $config['class'] }}" style="padding: 10px 15px; border-radius: 20px; font-size: 14px;">
-                                <i class="fas fa-{{ $config['icon'] }} me-2"></i>{{ $config['text'] }}
-                            </span>
-                            @if($reservasi->status == 'pending')
-                                <p class="mb-0 mt-2 text-muted">
-                                    <i class="fas fa-info-circle me-1"></i>
-                                    Reservasi Anda sedang menunggu konfirmasi dari dokter. Harap bersabar.
-                                </p>
-                            @elseif($reservasi->status == 'confirmed')
-                                <p class="mb-0 mt-2 text-muted">
-                                    <i class="fas fa-check me-1"></i>
-                                    Reservasi telah dikonfirmasi. Harap datang tepat waktu.
-                                </p>
-                            @elseif($reservasi->status == 'completed')
-                                <p class="mb-0 mt-2 text-muted">
-                                    <i class="fas fa-thumbs-up me-1"></i>
-                                    Konsultasi telah selesai dilaksanakan.
-                                </p>
-                            @elseif($reservasi->status == 'cancelled')
-                                <p class="mb-0 mt-2 text-muted">
-                                    <i class="fas fa-ban me-1"></i>
-                                    Reservasi telah dibatalkan.
-                                </p>
-                            @endif
-                        </div>
-                    </div>
-
-                    <!-- Reservasi Details -->
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="info-item" style="padding: 20px; background: linear-gradient(135deg, #ffeaa7, #fdcb6e); border-radius: 10px;">
-                                <div class="d-flex align-items-center">
-                                    <div class="info-icon me-3" style="width: 50px; height: 50px; background: rgba(225, 112, 85, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                        <i class="fas fa-calendar-alt fa-lg" style="color: #e17055;"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-1" style="color: #2d3436; font-weight: 600;">Tanggal Reservasi</h6>
-                                        <p class="mb-0" style="color: #636e72; font-size: 16px; font-weight: 500;">
-                                            {{ \Carbon\Carbon::parse($reservasi->tanggal_reservasi)->translatedFormat('l, d F Y') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="info-item" style="padding: 20px; background: linear-gradient(135deg, #a8e6cf, #74b9ff); border-radius: 10px;">
-                                <div class="d-flex align-items-center">
-                                    <div class="info-icon me-3" style="width: 50px; height: 50px; background: rgba(0, 184, 148, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                        <i class="fas fa-clock fa-lg" style="color: #00b894;"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-1" style="color: #2d3436; font-weight: 600;">Waktu</h6>
-                                        <p class="mb-0" style="color: #636e72; font-size: 16px; font-weight: 500;">
-                                            {{ \Carbon\Carbon::createFromFormat('H:i:s', $reservasi->jam_reservasi)->format('H:i') }} WIB
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="info-item" style="padding: 20px; background: linear-gradient(135deg, #fd79a8, #e84393); border-radius: 10px;">
-                                <div class="d-flex align-items-start">
-                                    <div class="info-icon me-3" style="width: 50px; height: 50px; background: rgba(214, 48, 49, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                        <i class="fas fa-stethoscope fa-lg" style="color: #d63031;"></i>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-2" style="color: #2d3436; font-weight: 600;">Keluhan</h6>
-                                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 8px;">
-                                            <p class="mb-0" style="color: #2d3436; line-height: 1.6;">
-                                                {{ $reservasi->keluhan }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="row">
+    <div class="col-12">
+        <!-- Header Section -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="mb-1" style="color: #2c3e50; font-weight: 600;">
+                    <i class="fas fa-file-medical me-2" style="color: #dc3545;"></i>
+                    Detail Reservasi
+                </h2>
+                <p class="text-muted mb-0">Informasi lengkap reservasi Anda</p>
+            </div>
+            <div>
+                <a href="{{ route('pasien.reservasi.index') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Kembali
+                </a>
             </div>
         </div>
 
-        <!-- Sidebar -->
-        <div class="col-lg-4">
-            <!-- Doctor Info Card -->
-            <div class="card mb-4" style="border: none; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                <div class="card-header" style="background: linear-gradient(135deg, #dda0dd, #b19cd9); color: white; border-radius: 12px 12px 0 0;">
-                    <h5 class="mb-0">
-                        <i class="fas fa-user-md me-2"></i>Informasi Dokter
-                    </h5>
-                </div>
-                <div class="card-body text-center" style="padding: 30px;">
-                    <div class="doctor-avatar mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
-                        <i class="fas fa-user-md fa-2x text-white"></i>
-                    </div>
-                    <h5 style="color: #2c3e50; font-weight: 600;">{{ $reservasi->dokter->name ?? 'Dokter tidak ditemukan' }}</h5>
-                    <p class="text-muted mb-3">{{ $reservasi->dokter->email ?? '' }}</p>
-                    
-                    @if($reservasi->dokter && $reservasi->dokter->profile)
-                        <div class="doctor-details text-start">
-                            @if($reservasi->dokter->profile->specialization)
-                                <div class="mb-2">
-                                    <i class="fas fa-graduation-cap text-primary me-2"></i>
-                                    <small>{{ $reservasi->dokter->profile->specialization }}</small>
-                                </div>
-                            @endif
-                            @if($reservasi->dokter->profile->phone)
-                                <div class="mb-2">
-                                    <i class="fas fa-phone text-success me-2"></i>
-                                    <small>{{ $reservasi->dokter->profile->phone }}</small>
-                                </div>
-                            @endif
-                        </div>
-                    @endif
-                </div>
+        <!-- Alert Messages -->
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
+        @endif
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
 
-            <!-- Action Card -->
-            @if(in_array($reservasi->status, ['pending', 'confirmed']))
-                <div class="card" style="border: none; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                    <div class="card-header" style="background: linear-gradient(135deg, #dc3545, #b02a37); color: white; border-radius: 12px 12px 0 0;">
-                        <h5 class="mb-0">
-                            <i class="fas fa-cogs me-2"></i>Aksi
+        <div class="row">
+            <!-- Doctor Information Card -->
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white border-0 pb-0">
+                        <h5 class="card-title mb-0" style="color: #2c3e50; font-weight: 600;">
+                            <i class="fas fa-user-md me-2" style="color: #dc3545;"></i>
+                            Informasi Dokter
                         </h5>
                     </div>
-                    <div class="card-body" style="padding: 20px;">
-                        @php
-                            // Perbaiki parsing datetime
-                            $tanggalReservasi = \Carbon\Carbon::parse($reservasi->tanggal_reservasi);
-                            $jamReservasi = \Carbon\Carbon::createFromFormat('H:i:s', $reservasi->jam_reservasi);
-                            $reservasiDateTime = $tanggalReservasi->setTime($jamReservasi->hour, $jamReservasi->minute);
-                            $canCancel = $reservasiDateTime->diffInHours(now()) >= 2;
-                            $timeUntilAppointment = $reservasiDateTime->diffInHours(now());
-                        @endphp
-
-                        @if($canCancel)
-                            <button type="button" 
-                                    class="btn btn-danger w-100" 
-                                    style="border-radius: 8px; padding: 12px;"
-                                    onclick="confirmCancel({{ $reservasi->id }})">
-                                <i class="fas fa-times me-2"></i>Batalkan Reservasi
-                            </button>
-                            <small class="text-muted d-block mt-2">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Reservasi dapat dibatalkan hingga 2 jam sebelum jadwal
-                            </small>
-                        @else
-                            <button type="button" 
-                                    class="btn btn-secondary w-100" 
-                                    style="border-radius: 8px; padding: 12px; opacity: 0.6;"
-                                    disabled>
-                                <i class="fas fa-times me-2"></i>Tidak Dapat Dibatalkan
-                            </button>
-                            <small class="text-muted d-block mt-2">
-                                <i class="fas fa-exclamation-triangle me-1"></i>
-                                Tidak dapat dibatalkan (kurang dari 2 jam)
-                            </small>
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($reservasi->dokter->name ?? 'Dokter') }}&background=dc3545&color=fff&size=120" 
+                                 class="rounded-circle mb-3" width="120" height="120" alt="Avatar Dokter">
+                            <h4 class="mb-1 fw-bold">{{ $reservasi->dokter->name ?? 'Dokter tidak ditemukan' }}</h4>
+                            <p class="text-muted mb-0">{{ $reservasi->dokter->email ?? '' }}</p>
+                        </div>
+                        @if($reservasi->dokter && $reservasi->dokter->profile)
+                            <div class="border-top pt-3">
+                                <div class="row g-3">
+                                    @if($reservasi->dokter->profile->specialization)
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-graduation-cap text-muted me-3" style="width: 20px;"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">Spesialisasi</small>
+                                                    <span>{{ $reservasi->dokter->profile->specialization }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if($reservasi->dokter->profile->phone)
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-phone text-muted me-3" style="width: 20px;"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">Nomor Telepon</small>
+                                                    <span>{{ $reservasi->dokter->profile->phone }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if($reservasi->dokter->profile->experience_years)
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-award text-muted me-3" style="width: 20px;"></i>
+                                                <div>
+                                                    <small class="text-muted d-block">Pengalaman</small>
+                                                    <span>{{ $reservasi->dokter->profile->experience_years }} tahun</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         @endif
                     </div>
                 </div>
-            @endif
+            </div>
 
-            <!-- Additional Info Card -->
-            <div class="card mt-4" style="border: none; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                <div class="card-header" style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; border-radius: 12px 12px 0 0;">
-                    <h5 class="mb-0">
-                        <i class="fas fa-info me-2"></i>Informasi Tambahan
-                    </h5>
-                </div>
-                <div class="card-body" style="padding: 20px;">
-                    <div class="info-row mb-3">
-                        <small class="text-muted">ID Reservasi:</small>
-                        <div style="font-family: monospace; font-weight: 600; color: #2c3e50;">
-                            #{{ str_pad($reservasi->id, 6, '0', STR_PAD_LEFT) }}
-                        </div>
+            <!-- Reservation Details -->
+            <div class="col-lg-8 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white border-0 pb-0">
+                        <h5 class="card-title mb-0" style="color: #2c3e50; font-weight: 600;">
+                            <i class="fas fa-calendar-check me-2" style="color: #dc3545;"></i>
+                            Detail Reservasi
+                        </h5>
                     </div>
-                    
-                    <div class="info-row mb-3">
-                        <small class="text-muted">Dibuat pada:</small>
-                        <div style="color: #2c3e50;">
-                            {{ $reservasi->created_at->translatedFormat('d F Y, H:i') }} WIB
+                    <div class="card-body">
+                        <!-- Status Badge -->
+                        <div class="mb-4 text-center">
+                            @php
+                                $statusConfig = [
+                                    'pending' => ['class' => 'warning', 'text' => 'Menunggu Konfirmasi'],
+                                    'confirmed' => ['class' => 'success', 'text' => 'Terkonfirmasi'],
+                                    'completed' => ['class' => 'primary', 'text' => 'Selesai'],
+                                    'cancelled' => ['class' => 'danger', 'text' => 'Dibatalkan'],
+                                ];
+                                $config = $statusConfig[$reservasi->status] ?? ['class' => 'secondary', 'text' => 'Unknown'];
+                            @endphp
+                            <span class="badge bg-{{ $config['class'] }} px-3 py-2 @if($config['class'] == 'warning') text-dark @endif">
+                                {{ $config['text'] }}
+                            </span>
                         </div>
-                    </div>
 
-                    @if($reservasi->updated_at != $reservasi->created_at)
-                        <div class="info-row">
-                            <small class="text-muted">Terakhir diupdate:</small>
-                            <div style="color: #2c3e50;">
-                                {{ $reservasi->updated_at->translatedFormat('d F Y, H:i') }} WIB
+                        <!-- Status Description -->
+                        <div class="mb-4">
+                            <div class="alert alert-info">
+                                @if($reservasi->status == 'pending')
+                                    <i class="fas fa-clock me-2"></i>
+                                    Reservasi Anda sedang menunggu konfirmasi dari dokter. Harap bersabar.
+                                @elseif($reservasi->status == 'confirmed')
+                                    <i class="fas fa-check me-2"></i>
+                                    Reservasi telah dikonfirmasi. Harap datang tepat waktu.
+                                @elseif($reservasi->status == 'completed')
+                                    <i class="fas fa-thumbs-up me-2"></i>
+                                    Konsultasi telah selesai dilaksanakan.
+                                @elseif($reservasi->status == 'cancelled')
+                                    <i class="fas fa-ban me-2"></i>
+                                    Reservasi telah dibatalkan.
+                                @endif
                             </div>
                         </div>
-                    @endif
+
+                        <!-- Reservation Info -->
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="bg-light rounded p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-calendar-day text-primary me-2"></i>
+                                        <strong>Tanggal Reservasi</strong>
+                                    </div>
+                                    <h5 class="mb-0 text-primary">{{ \Carbon\Carbon::parse($reservasi->tanggal_reservasi)->translatedFormat('d F Y') }}</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bg-light rounded p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-clock text-info me-2"></i>
+                                        <strong>Jam Reservasi</strong>
+                                    </div>
+                                    <h5 class="mb-0 text-info">{{ \Carbon\Carbon::createFromFormat('H:i:s', $reservasi->jam_reservasi)->format('H:i') }} WIB</h5>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="bg-light rounded p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-notes-medical text-warning me-2"></i>
+                                        <strong>Keluhan</strong>
+                                    </div>
+                                    <p class="mb-0">{{ $reservasi->keluhan }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bg-light rounded p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-plus-circle text-success me-2"></i>
+                                        <strong>Dibuat Pada</strong>
+                                    </div>
+                                    <p class="mb-0">{{ $reservasi->created_at->translatedFormat('d F Y, H:i') }} WIB</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bg-light rounded p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-edit text-secondary me-2"></i>
+                                        <strong>Terakhir Update</strong>
+                                    </div>
+                                    <p class="mb-0">{{ $reservasi->updated_at->translatedFormat('d F Y, H:i') }} WIB</p>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="bg-light rounded p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-hashtag text-muted me-2"></i>
+                                        <strong>ID Reservasi</strong>
+                                    </div>
+                                    <p class="mb-0" style="font-family: monospace; font-weight: 600;">#{{ str_pad($reservasi->id, 6, '0', STR_PAD_LEFT) }}</p>
+                                </div>
+                            </div>
+                            @if($reservasi->catatan_dokter)
+                                <div class="col-12">
+                                    <div class="bg-light rounded p-3 border-start border-4 border-primary">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="fas fa-user-md text-primary me-2"></i>
+                                            <strong>Catatan Dokter</strong>
+                                        </div>
+                                        <p class="mb-0">{{ $reservasi->catatan_dokter }}</p>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Action Buttons -->
+                        @if(in_array($reservasi->status, ['pending', 'confirmed']))
+                            <div class="border-top pt-4 mt-4">
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        @php
+                                            // Perbaiki parsing datetime
+                                            $tanggalReservasi = \Carbon\Carbon::parse($reservasi->tanggal_reservasi);
+                                            $jamReservasi = \Carbon\Carbon::createFromFormat('H:i:s', $reservasi->jam_reservasi);
+                                            $reservasiDateTime = $tanggalReservasi->setTime($jamReservasi->hour, $jamReservasi->minute);
+                                            $canCancel = $reservasiDateTime->diffInHours(now()) >= 2;
+                                        @endphp
+                                        @if($canCancel)
+                                            <button type="button" 
+                                                    class="btn btn-danger w-100" 
+                                                    data-bs-toggle="modal" data-bs-target="#cancelModal">
+                                                <i class="fas fa-times me-2"></i>Batalkan Reservasi
+                                            </button>
+                                            <small class="text-muted d-block mt-2 text-center">
+                                                <i class="fas fa-info-circle me-1"></i>
+                                                Reservasi dapat dibatalkan hingga 2 jam sebelum jadwal
+                                            </small>
+                                        @else
+                                            <button type="button" 
+                                                    class="btn btn-secondary w-100" 
+                                                    disabled>
+                                                <i class="fas fa-times me-2"></i>Tidak Dapat Dibatalkan
+                                            </button>
+                                            <small class="text-muted d-block mt-2 text-center">
+                                                <i class="fas fa-exclamation-triangle me-1"></i>
+                                                Tidak dapat dibatalkan (kurang dari 2 jam)
+                                            </small>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -260,100 +258,61 @@
 </div>
 
 <!-- Cancel Confirmation Modal -->
-<div class="modal fade" id="cancelModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content" style="border-radius: 12px;">
-            <div class="modal-header" style="background: linear-gradient(135deg, #dc3545, #b02a37); color: white; border-radius: 12px 12px 0 0;">
-                <h5 class="modal-title">
-                    <i class="fas fa-exclamation-triangle me-2"></i>Konfirmasi Pembatalan
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="text-center mb-3">
-                    <i class="fas fa-exclamation-triangle fa-3x text-warning"></i>
+@if(in_array($reservasi->status, ['pending', 'confirmed']))
+    <div class="modal fade" id="cancelModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-times text-danger me-2"></i>
+                        Konfirmasi Pembatalan
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <h6 class="text-center mb-3">Apakah Anda yakin ingin membatalkan reservasi ini?</h6>
-                <div class="alert alert-warning" style="border: none; border-radius: 8px;">
-                    <strong>Detail Reservasi:</strong><br>
-                    <i class="fas fa-user-md me-1"></i> {{ $reservasi->dokter->name ?? 'Dokter tidak ditemukan' }}<br>
-                    <i class="fas fa-calendar me-1"></i> {{ \Carbon\Carbon::parse($reservasi->tanggal_reservasi)->translatedFormat('d F Y') }}<br>
-                    <i class="fas fa-clock me-1"></i> {{ \Carbon\Carbon::createFromFormat('H:i:s', $reservasi->jam_reservasi)->format('H:i') }} WIB
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Apakah Anda yakin ingin membatalkan reservasi ini?
+                    </div>
+                    <div class="bg-light rounded p-3 mb-3">
+                        <strong>Detail Reservasi:</strong><br>
+                        <i class="fas fa-user-md me-1"></i> {{ $reservasi->dokter->name ?? 'Dokter tidak ditemukan' }}<br>
+                        <i class="fas fa-calendar me-1"></i> {{ \Carbon\Carbon::parse($reservasi->tanggal_reservasi)->translatedFormat('d F Y') }}<br>
+                        <i class="fas fa-clock me-1"></i> {{ \Carbon\Carbon::createFromFormat('H:i:s', $reservasi->jam_reservasi)->format('H:i') }} WIB
+                    </div>
+                    <p class="text-muted text-center">Tindakan ini tidak dapat dibatalkan.</p>
                 </div>
-                <p class="text-muted text-center">Tindakan ini tidak dapat dibatalkan.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="fas fa-arrow-left me-1"></i>Batal
-                </button>
-                <form id="cancelForm" method="POST" style="display: inline;">
-                    @csrf
-                    @method('PATCH')
-                    <button type="submit" class="btn btn-danger">
-                        <i class="fas fa-times me-1"></i>Ya, Batalkan Reservasi
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-arrow-left me-1"></i>Batal
                     </button>
-                </form>
+                    <form method="POST" action="{{ route('pasien.reservasi.cancel', $reservasi->id) }}" style="display: inline;">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-times me-1"></i>Ya, Batalkan Reservasi
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+@endif
+@endsection
 
+@section('scripts')
 <script>
-function confirmCancel(reservasiId) {
-    const form = document.getElementById('cancelForm');
-    form.action = `/pasien/reservasi/${reservasiId}/cancel`;
-    
-    const modal = new bootstrap.Modal(document.getElementById('cancelModal'));
-    modal.show();
-}
-
-// Auto hide alerts after 5 seconds
-document.addEventListener('DOMContentLoaded', function() {
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(function(alert) {
-        setTimeout(function() {
-            const bsAlert = new bootstrap.Alert(alert);
-            bsAlert.close();
-        }, 5000);
+$(document).ready(function() {
+    // Tooltip initialization
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
     });
+
+    // Auto-hide alerts after 5 seconds
+    setTimeout(function() {
+        $('.alert').fadeOut('slow');
+    }, 5000);
 });
 </script>
-
-<style>
-.info-item {
-    transition: transform 0.2s ease;
-}
-
-.info-item:hover {
-    transform: translateY(-2px);
-}
-
-.doctor-avatar {
-    transition: transform 0.3s ease;
-}
-
-.doctor-avatar:hover {
-    transform: scale(1.05);
-}
-
-.info-row {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-}
-
-.info-row:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-@media (max-width: 768px) {
-    .container-fluid {
-        padding: 15px;
-    }
-    
-    .card-body {
-        padding: 20px !important;
-    }
-}
-</style>
 @endsection
