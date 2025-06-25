@@ -10,6 +10,7 @@ use App\Http\Controllers\Pasien\ResepObatController;
 use App\Http\Controllers\Pasien\RequestSuratKeteranganController;
 use App\Http\Controllers\Pasien\ConsultationController;
 use App\Http\Controllers\Admin\ObatController;
+use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Middleware\CheckRole;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Resep Obat Management Routes
     Route::get('/resep-obat', [App\Http\Controllers\Admin\ReservasiController::class, 'resepObat'])->name('resep-obat.index');
     Route::patch('/resep-obat/{resepObat}/status', [App\Http\Controllers\Admin\ReservasiController::class, 'updateResepStatus'])->name('resep-obat.updateStatus');
+    // Doctor Management Routes
+    Route::resource('doctors', DoctorController::class);
+    Route::patch('/doctors/{doctor}/toggle-status', [DoctorController::class, 'toggleStatus'])->name('doctors.toggle-status');
 });
 
 // Dokter Routes
@@ -79,6 +83,7 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')->g
         Route::get('/{rekamMedis}', [App\Http\Controllers\Dokter\RekamMedisController::class, 'show'])->name('show');
         Route::get('/{rekamMedis}/edit', [App\Http\Controllers\Dokter\RekamMedisController::class, 'edit'])->name('edit');
         Route::put('/{rekamMedis}', [App\Http\Controllers\Dokter\RekamMedisController::class, 'update'])->name('update');
+        Route::delete('/{rekamMedis}', [App\Http\Controllers\Dokter\RekamMedisController::class, 'destroy'])->name('destroy');
         Route::get('/statistics/data', [App\Http\Controllers\Dokter\RekamMedisController::class, 'getStatistics'])->name('statistics');
     });
 
