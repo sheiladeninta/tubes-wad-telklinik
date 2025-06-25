@@ -186,7 +186,8 @@
                                             </div>
                                         </td>
                                         <td class="px-4 py-3">
-                                            <span class="badge {{ $reservasi->status_badge_class }} px-3 py-2">
+                                            <span class="badge bg-{{ $reservasi->status_badge_class }} px-3 py-2
+                                                @if($reservasi->status_badge_class == 'warning') text-dark @endif">
                                                 {{ $reservasi->status_label }}
                                             </span>
                                         </td>
